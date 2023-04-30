@@ -1,0 +1,10 @@
+*
+!src
+!libs
+!apps
+!typings
+!package.json
+!yarn.lock
+!tsconfig*.json
+!nest-cli.json
+!scripts/setup-auth.const.ts
