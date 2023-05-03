@@ -6,7 +6,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { createMock } from '@golevelup/ts-jest';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { Observable, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('UserCreateHandler', () => {
   let handler: UserCreateHandler;
@@ -44,14 +44,14 @@ describe('UserCreateHandler', () => {
     });
 
     // Act
-    const cut = handler.create(dto);
+    handler.create(dto);
 
     // Assert
     expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
     expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 
-  it('should return id', () => {
+  it('should create user and return id', (done) => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     clientProxyMock.send.mockReturnValue(of({ id }));
@@ -59,20 +59,17 @@ describe('UserCreateHandler', () => {
     const username = 'My-username';
 
     const dto = { email, username };
-    const commandName = {
-      cmd: UsersCommandPatternEnum.USER_CREATE,
-    };
-    const command = new UserCreateCommand({
-      email,
-      username,
-    });
 
     // Act
     const cut = handler.create(dto);
 
-    // Assert
-    expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
-    expect(clientProxyMock.send).toBeCalledTimes(1);
+    cut.subscribe({
+      next(value) {
+        // Assert
+        expect(value).toStrictEqual({ id });
+        done();
+      },
+    });
   });
 
   it('should throw 409 if user exists for given email', (done) => {
@@ -93,7 +90,7 @@ describe('UserCreateHandler', () => {
         expect(err).toStrictEqual(error);
         done();
       },
-    }),
-      expect(clientProxyMock.send).toBeCalledTimes(1);
+    });
+    expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 });

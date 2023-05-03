@@ -1,12 +1,11 @@
-// import { createMock } from '@golevelup/ts-jest';
+import { createMock } from '@golevelup/ts-jest';
 import { Test } from '@nestjs/testing';
 import { UserDeleteHandler } from './user-delete.handler';
 import { UserDeleteCommand } from './user-delete.command';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
-import { createMock } from '@golevelup/ts-jest';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { firstValueFrom, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('UserDeleteHandler', () => {
   let handler: UserDeleteHandler;
@@ -39,7 +38,7 @@ describe('UserDeleteHandler', () => {
     const command = new UserDeleteCommand({ id });
 
     // Act
-    const cut = handler.delete(id);
+    handler.delete(id);
 
     // Assert
     expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
@@ -60,8 +59,8 @@ describe('UserDeleteHandler', () => {
         expect(value).toBeUndefined();
         done();
       },
-    }),
-      expect(clientProxyMock.send).toBeCalledTimes(1);
+    });
+    expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 
   it('should throw 404 if no user for given id', (done) => {
