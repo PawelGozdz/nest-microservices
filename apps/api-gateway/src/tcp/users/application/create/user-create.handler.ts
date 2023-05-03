@@ -4,7 +4,6 @@ import { ClientProxy } from '@nestjs/microservices';
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
 import { UserCreateCommand } from './user-create.command';
-import { CreateUserDto } from '../../dto';
 
 @Injectable()
 export class UserCreateHandler {
@@ -15,7 +14,7 @@ export class UserCreateHandler {
     logger.setContext(this.constructor.name);
   }
 
-  create(command: CreateUserDto): Observable<{ id: string }> {
+  create(command: UserCreateCommand): Observable<{ id: string }> {
     this.logger.debug(command, `Processing Create User`);
 
     return this.usersClient.send<{ id: string }, UserCreateCommand>(

@@ -1,15 +1,15 @@
-// import { createMock } from '@golevelup/ts-jest';
+import { createMock } from '@golevelup/ts-jest';
 import { Test } from '@nestjs/testing';
-import { UserCreateHandler } from './user-create.handler';
-import { UserCreateCommand } from './user-create.command';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
-import { createMock } from '@golevelup/ts-jest';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
 import { of, throwError } from 'rxjs';
+import { UserFindOneHandler } from './user-find-one.handler';
+import { UserFindOneCommand } from './user-find-one.command';
+import { IUser } from '@app/ddd';
 
-describe('UserCreateHandler', () => {
-  let handler: UserCreateHandler;
+describe('UserFindOneHandler', () => {
+  let handler: UserFindOneHandler;
   let clientProxyMock: jest.Mocked<ClientProxy>;
 
   beforeEach(async () => {
@@ -18,7 +18,7 @@ describe('UserCreateHandler', () => {
     const app = await Test.createTestingModule({
       imports: [TestLoggerModule.forRoot()],
       providers: [
-        UserCreateHandler,
+        UserFindOneHandler,
         {
           provide: ServiceNameEnum.USERS,
           useValue: clientProxyMock,
@@ -26,71 +26,66 @@ describe('UserCreateHandler', () => {
       ],
     }).compile();
 
-    handler = app.get(UserCreateHandler);
+    handler = app.get(UserFindOneHandler);
   });
 
   it('should send event', () => {
     // Arrange
-    const email = 'my@test.com';
-    const username = 'My-username';
+    const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
 
-    const dto = { email, username };
     const commandName = {
-      cmd: UsersCommandPatternEnum.USER_CREATE,
+      cmd: UsersCommandPatternEnum.USER_FIND_ONE,
     };
-    const command = new UserCreateCommand({
-      email,
-      username,
-    });
+    const command = new UserFindOneCommand({ id });
 
     // Act
-    handler.create(dto);
+    handler.findOne(id);
 
     // Assert
     expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
     expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 
-  it('should create user and return id', (done) => {
+  it('should return user data', (done) => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
-    clientProxyMock.send.mockReturnValue(of({ id }));
-    const email = 'my@test.com';
-    const username = 'My-username';
-
-    const dto = { email, username };
+    const email = 'test@test.com';
+    const username = 'IamGroot';
+    const user: IUser = {
+      id,
+      email,
+      username,
+    };
+    clientProxyMock.send.mockReturnValue(of(user));
 
     // Act
-    const cut = handler.create(dto);
+    const cut = handler.findOne(id);
 
     cut.subscribe({
       next(value) {
         // Assert
-        expect(value).toStrictEqual({ id });
+        expect(value).toStrictEqual(user);
         done();
       },
     });
+    expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 
-  it('should throw 409 if user exists for given email', (done) => {
+  it('should throw 404 if no user for given id', (done) => {
     // Arrange
-    const error = { statusCode: 409, message: 'Conflict' };
+    const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
+    const error = { statusCode: 404, message: 'User Not Found' };
     clientProxyMock.send.mockReturnValue(throwError(error));
 
-    const email = 'my@test.com';
-    const username = 'My-username';
-
-    const dto = { email, username };
-
     // Act
-    const cut = handler.create(dto);
+    const cut = handler.findOne(id);
 
     cut.subscribe({
       error(err) {
         expect(err).toStrictEqual(error);
         done();
       },
-    });
-    expect(clientProxyMock.send).toBeCalledTimes(1);
+    }),
+      expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 });

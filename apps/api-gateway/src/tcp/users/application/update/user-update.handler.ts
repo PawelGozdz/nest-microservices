@@ -3,10 +3,11 @@ import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
 import { ClientProxy } from '@nestjs/microservices';
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
-import { UserFindOneCommand } from './user-find-one.command';
+import { UserUpdateCommand } from './user-update.command';
+import { IUser } from '@app/ddd';
 
 @Injectable()
-export class UserFindOneHandler {
+export class UserUpdateHandler {
   constructor(
     @Inject(ServiceNameEnum.USERS) private readonly usersClient: ClientProxy,
     private logger: PinoLogger,
@@ -14,13 +15,15 @@ export class UserFindOneHandler {
     logger.setContext(this.constructor.name);
   }
 
-  findOne(id: string): Observable<any> {
-    this.logger.debug({ id }, `Processing Find One`);
+  update(command: UserUpdateCommand): Observable<IUser> {
+    this.logger.debug(command, `Processing Update User`);
 
-    return this.usersClient.send<{ id: string }, UserFindOneCommand>(
-      { cmd: UsersCommandPatternEnum.USER_FIND_ONE },
-      new UserFindOneCommand({
-        id,
+    return this.usersClient.send<IUser, UserUpdateCommand>(
+      { cmd: UsersCommandPatternEnum.USER_UPDATE },
+      new UserUpdateCommand({
+        email: command.email,
+        username: command.username,
+        id: command.id,
       }),
     );
   }

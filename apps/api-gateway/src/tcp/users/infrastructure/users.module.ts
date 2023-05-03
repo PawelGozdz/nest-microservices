@@ -6,15 +6,16 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ServiceNameEnum } from '@app/microservices';
-import { EnvConfig } from '../../infrastructure/config';
 import { ConfigService } from '@nestjs/config';
-import { UserCreateHandler } from './commands/create/user-create.handler';
 import {
+  UserCreateHandler,
   UserDeleteHandler,
   UserFindManyHandler,
   UserFindOneHandler,
   UserUpdateHandler,
-} from './commands';
+} from '../application';
+import { IUsersService } from '../domain/users-service.interface';
+import { EnvConfig } from '../../../infrastructure';
 
 const handlers = [
   UserCreateHandler,
@@ -49,7 +50,14 @@ const tlsOptions = {
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, ...handlers],
+  providers: [
+    {
+      provide: IUsersService,
+      useClass: UsersService,
+    },
+    // UsersService,
+    ...handlers,
+  ],
   exports: [UsersService],
 })
 export class UsersModule {}

@@ -7,13 +7,13 @@ import compression from 'compression';
 import { AppValidationPipe } from '@app/common';
 import { AppModule } from './app.module';
 import { nestApplicationOptions } from './nest-app-configuration';
-import { UsersModule } from './tcp/users/users.module';
 import {
   EnvConfig,
   HttpExceptionFilter,
   SwaggerBuilder,
   nestApplicationSecurityConfiguration,
 } from './infrastructure';
+import { UsersModule } from './tcp/users/infrastructure/users.module';
 
 async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(

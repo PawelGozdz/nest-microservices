@@ -3,11 +3,10 @@ import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
 import { ClientProxy } from '@nestjs/microservices';
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
-import { UserFindManyCommand } from './user-find-many.command';
-import { FindManyUserDto } from '../../dto';
+import { UserDeleteCommand } from './user-delete.command';
 
 @Injectable()
-export class UserFindManyHandler {
+export class UserDeleteHandler {
   constructor(
     @Inject(ServiceNameEnum.USERS) private readonly usersClient: ClientProxy,
     private logger: PinoLogger,
@@ -15,12 +14,14 @@ export class UserFindManyHandler {
     logger.setContext(this.constructor.name);
   }
 
-  findMany(_: FindManyUserDto): Observable<any> {
-    this.logger.debug(`Processing Find Many`);
+  delete(command: UserDeleteCommand): Observable<void> {
+    this.logger.debug(command, `Processing Delete User`);
 
-    return this.usersClient.send(
-      { cmd: UsersCommandPatternEnum.USER_FIND_MANY },
-      new UserFindManyCommand({}),
+    return this.usersClient.send<void, UserDeleteCommand>(
+      { cmd: UsersCommandPatternEnum.USER_DELETE },
+      new UserDeleteCommand({
+        id: command.id,
+      }),
     );
   }
 }
