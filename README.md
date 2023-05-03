@@ -1,73 +1,57 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+SSL
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Generate certificates
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Install OpenSSL if you haven't already. OpenSSL is a command-line tool that can be used to generate and manage SSL/TLS certificates.
 
-## Description
+Generate a root CA certificate. The root CA certificate is used to sign other certificates in your system. You can generate a root CA certificate using the following command:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+```
+openssl req -new -x509 -keyout ca.key -out ca.crt -days 365 -nodes
 ```
 
-## Running the app
+This command will generate a new self-signed root CA certificate that is valid for 365 days. It will also create a private key file (ca.key) and a certificate file (ca.crt) that you will need to sign other certificates.
 
-```bash
-# development
-$ npm run start
+Generate a server certificate for users-service. The server certificate is used by users-service to identify itself to clients. You can generate a server certificate using the following command:
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+openssl req -new -newkey rsa:2048 -nodes -keyout server.key -out server.csr
 ```
 
-## Test
+This command will create a private key file (server.key) and a certificate signing request file (server.csr) for the server certificate.
 
-```bash
-# unit tests
-$ npm run test
+Sign the server certificate with the root CA certificate. You can sign the server certificate using the following command:
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365
 ```
 
-## Support
+This command will sign the server certificate with the root CA certificate and create a new server certificate file (server.crt) that can be used by users-service.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Generate a client certificate for api-gateway. The client certificate is used by api-gateway to identify itself to servers, such as users-service. You can generate a client certificate using the following command:
 
-## Stay in touch
+```
+openssl req -new -newkey rsa:2048 -nodes -keyout client.key -out client.csr
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+This command will create a private key file (client.key) and a certificate signing request file (client.csr) for the client certificate.
 
-## License
+Sign the client certificate with the root CA certificate. You can sign the client certificate using the following command:
 
-Nest is [MIT licensed](LICENSE).
+```
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 365
+```
+
+This command will sign the client certificate with the root CA certificate and create a new client certificate file (client.crt) that can be used by api-gateway.
+
+Copy the server certificate and key to the users-service directory. You should copy the server.crt and server.key files to the directory where users-service is located.
+
+Copy the client certificate and key to the api-gateway directory. You should copy the client.crt and client.key files to the directory where api-gateway is located.
+
+Once you have generated the certificates and copied them to the appropriate directories, you can modify the ClientsModule options in both api-gateway and users-service to include the TLS options that reference the generated certificates.
+
+Note that these certificates are for testing purposes only and should not be used in production environments. In production, you should obtain certificates from a trusted certificate authority (CA) to ensure the security of your system.
+
+The server.csr and client.csr files are certificate signing requests, which are used to obtain a signed certificate from a certificate authority. In our case, we are self-signing the certificates, so we do not need these files.
+
+The ca.crt and ca.key files are the root CA certificate and private key that you have generated. These files are used to sign and verify the certificates for api-gateway and users-service. You should keep these files secure and not share them with anyone who should not have access to them.

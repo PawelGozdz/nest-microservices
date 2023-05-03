@@ -16,7 +16,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
+        "webpackConfigPath": "apps/api-gateway/webpack.config.js"
       }
     },
     "departments": {
@@ -25,7 +26,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/departments/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/departments/tsconfig.app.json"
+        "tsConfigPath": "apps/departments/tsconfig.app.json",
+        "webpackConfigPath": "apps/departments/webpack.config.js"
       }
     },
     "users": {
@@ -34,7 +36,8 @@
       "entryFile": "main",
       "sourceRoot": "apps/users/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/users/tsconfig.app.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
+        "webpackConfigPath": "apps/users/webpack.config.js"
       }
     },
     "common": {

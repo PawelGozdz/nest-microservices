@@ -1,38 +1,39 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserEvent, EventPatternEnum, ServiceNameEnum } from '@app/microservices';
-import { ClientProxy } from '@nestjs/microservices';
-import { PinoLogger } from 'nestjs-pino';
+import { Observable } from 'rxjs';
+import { UserCreateHandler } from './commands/create/user-create.handler';
+import { UserDeleteHandler } from './commands/delete/user-delete.handler';
+import { UserFindManyHandler, UserFindOneHandler, UserUpdateHandler } from './commands';
+import { FindManyUserDto } from './dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: ClientProxy,
-    private logger: PinoLogger,
-  ) {
-    logger.setContext(this.constructor.name);
+    @Inject(UserCreateHandler) private readonly userCreateHandler: UserCreateHandler,
+    @Inject(UserDeleteHandler) private readonly userDeleteHandler: UserDeleteHandler,
+    @Inject(UserUpdateHandler) private readonly userUpdateHandler: UserUpdateHandler,
+    @Inject(UserFindOneHandler) private readonly userFindOneHandler: UserFindOneHandler,
+    @Inject(UserFindManyHandler) private readonly userFindManyHandler: UserFindManyHandler,
+  ) {}
+
+  create(command: CreateUserDto): Observable<{ id: string }> {
+    return this.userCreateHandler.create(command);
   }
 
-  create(createUserDto: CreateUserDto) {
-    this.logger.debug(createUserDto, `Processing Create User`);
-    this.usersClient.emit(EventPatternEnum.USER_CREATED, new CreateUserEvent('test@test.com'));
-    return 'This action adds a new user';
+  findMany(command: FindManyUserDto): Observable<any> {
+    return this.userFindManyHandler.findMany(command);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findOne(id: string): Observable<any> {
+    return this.userFindOneHandler.findOne(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  update(id: string, command: UpdateUserDto): Observable<any> {
+    return this.userUpdateHandler.update(id, command);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string): Observable<void> {
+    return this.userDeleteHandler.remove(id);
   }
 }

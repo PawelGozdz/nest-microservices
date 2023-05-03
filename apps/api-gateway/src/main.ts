@@ -1,14 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 
+import { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import compression from 'compression';
+import { AppValidationPipe } from '@app/common';
 import { AppModule } from './app.module';
 import { nestApplicationOptions } from './nest-app-configuration';
-import { AppValidationPipe, HttpExceptionFilter } from '@app/common';
-import { config as configuration } from './config/config';
-import { nestApplicationSecurityConfiguration } from './security-configuration';
-import { INestApplication } from '@nestjs/common';
-import { SwaggerBuilder } from './swagger-setup';
 import { UsersModule } from './tcp/users/users.module';
+import {
+  EnvConfig,
+  HttpExceptionFilter,
+  SwaggerBuilder,
+  nestApplicationSecurityConfiguration,
+} from './infrastructure';
 
 async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(
@@ -16,26 +21,31 @@ async function buildSwaggers(app: INestApplication) {
     UsersModule,
     '/users/api-docs',
     'Users Service',
-    'Rest API documentation of EMS',
+    'Rest API documentation of Users Service',
   );
 }
 
 async function bootstrap() {
-  const config = configuration();
-
   const app = await NestFactory.create(AppModule, {
     ...nestApplicationOptions,
   });
+  const config = app.get(ConfigService<EnvConfig>);
   app.useLogger(app.get(Logger));
 
   nestApplicationSecurityConfiguration(app);
 
-  await buildSwaggers(app);
+  if (config.get<boolean>('USE_SWAGGER')) {
+    await buildSwaggers(app);
+  }
+
+  if (config.get<boolean>('USE_COMPRESSION')) {
+    app.use(compression());
+  }
 
   app.useGlobalPipes(new AppValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  await app.listen(+config.get('PORT'));
+  await app.listen(config.get('PORT')!);
 }
 bootstrap().catch((err) => {
   console.error(err, 'Error while bootstrapping an application');

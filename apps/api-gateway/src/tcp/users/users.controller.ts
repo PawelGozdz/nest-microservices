@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IdDto } from './dto/id.dto';
+import { RequiredBody } from '@app/common';
 
 @Controller('users')
 export class UsersController {
@@ -14,21 +16,21 @@ export class UsersController {
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findMany({});
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Param() paramDto: IdDto) {
+    return this.usersService.findOne(paramDto.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  update(@Param() paramDto: IdDto, @RequiredBody() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(paramDto.id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param() dto: IdDto) {
+    return this.usersService.remove(dto.id);
   }
 }

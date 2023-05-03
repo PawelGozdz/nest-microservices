@@ -1,5 +1,6 @@
-import { EntityId, InvalidValueError, MissingValueError } from '@app/common';
+import { EntityId } from '@app/common';
 import { tryAct } from '@app/testing';
+import { BadRequestException } from '@nestjs/common';
 
 describe('Id Value Object', () => {
   it('should create proper id', () => {
@@ -9,16 +10,19 @@ describe('Id Value Object', () => {
   });
 
   it('should throw assertion error if organization number is invalid', () => {
-    const { error } = tryAct(() => EntityId.create('wrong'));
+    const wrongEntityId = 'wrong';
+    const { error } = tryAct(() => EntityId.create(wrongEntityId));
 
     expect(error).toBeDefined();
-    expect(error).toEqual(new InvalidValueError('entity identifier', 'wrong', 'not a valid UUID'));
+    expect(error).toEqual(
+      new BadRequestException(`Entity identifier ${wrongEntityId} is not a valid UUID`),
+    );
   });
 
   it('should throw assertion error if organization number is empty', () => {
     const { error } = tryAct(() => EntityId.create(''));
 
     expect(error).toBeDefined();
-    expect(error).toEqual(new MissingValueError('entity identifier'));
+    expect(error).toEqual(new BadRequestException('Missing entity identifier'));
   });
 });
