@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { ClientProxy } from '@nestjs/microservices';
 import { PinoLogger } from 'nestjs-pino';
-import { Observable } from 'rxjs';
+import { Observable } from '@app/common';
 import { UserDeleteCommand } from './user-delete.command';
+import { IClientProxy } from '../../domain';
 
 @Injectable()
 export class UserDeleteHandler {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: ClientProxy,
+    @Inject(ServiceNameEnum.USERS) private readonly usersClient: IClientProxy,
     private logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name);

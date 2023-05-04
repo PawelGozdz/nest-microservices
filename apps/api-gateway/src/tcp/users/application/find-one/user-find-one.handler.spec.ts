@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of, throwError } from 'rxjs';
+import { of, throwError } from '@app/common';
 import { UserFindOneHandler } from './user-find-one.handler';
 import { UserFindOneCommand } from './user-find-one.command';
 import { IUser } from '@app/ddd';
@@ -39,7 +39,7 @@ describe('UserFindOneHandler', () => {
     const command = new UserFindOneCommand({ id });
 
     // Act
-    handler.findOne(id);
+    handler.findOne(command);
 
     // Assert
     expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
@@ -57,9 +57,10 @@ describe('UserFindOneHandler', () => {
       username,
     };
     clientProxyMock.send.mockReturnValue(of(user));
+    const command = new UserFindOneCommand({ id });
 
     // Act
-    const cut = handler.findOne(id);
+    const cut = handler.findOne(command);
 
     cut.subscribe({
       next(value) {
@@ -76,9 +77,10 @@ describe('UserFindOneHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const error = { statusCode: 404, message: 'User Not Found' };
     clientProxyMock.send.mockReturnValue(throwError(error));
+    const command = new UserFindOneCommand({ id });
 
     // Act
-    const cut = handler.findOne(id);
+    const cut = handler.findOne(command);
 
     cut.subscribe({
       error(err) {

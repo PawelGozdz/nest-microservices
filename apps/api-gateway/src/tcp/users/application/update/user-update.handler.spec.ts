@@ -1,13 +1,12 @@
-// import { createMock } from '@golevelup/ts-jest';
 import { Test } from '@nestjs/testing';
-import { UserUpdateHandler } from './user-update.handler';
-import { UserUpdateCommand } from './user-update.command';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { createMock } from '@golevelup/ts-jest';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of, throwError } from 'rxjs';
+import { of, throwError } from '@app/common';
 import { IUser } from '@app/ddd';
+import { UserUpdateHandler } from './user-update.handler';
+import { UserUpdateCommand } from './user-update.command';
 
 describe('UserUpdateHandler', () => {
   let handler: UserUpdateHandler;

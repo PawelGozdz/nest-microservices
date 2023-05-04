@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of } from 'rxjs';
+import { of } from '@app/common';
 import { UserFindManyHandler } from './user-find-many.handler';
 import { UserFindManyCommand } from './user-find-many.command';
 import { IUser } from '@app/ddd';
@@ -39,7 +39,7 @@ describe('UserFindManyHandler', () => {
     const command = new UserFindManyCommand({});
 
     // Act
-    handler.findMany({});
+    handler.findMany(command);
 
     // Assert
     expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
@@ -57,9 +57,10 @@ describe('UserFindManyHandler', () => {
       username,
     };
     clientProxyMock.send.mockReturnValue(of([user]));
+    const command = new UserFindManyCommand({});
 
     // Act
-    const cut = handler.findMany({});
+    const cut = handler.findMany(command);
 
     cut.subscribe({
       next(value) {
@@ -75,9 +76,10 @@ describe('UserFindManyHandler', () => {
     // Arrange
 
     clientProxyMock.send.mockReturnValue(of([]));
+    const command = new UserFindManyCommand({});
 
     // Act
-    const cut = handler.findMany({});
+    const cut = handler.findMany(command);
 
     cut.subscribe({
       next(data) {

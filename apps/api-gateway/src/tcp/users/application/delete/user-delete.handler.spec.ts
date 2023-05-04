@@ -1,11 +1,11 @@
 import { createMock } from '@golevelup/ts-jest';
 import { Test } from '@nestjs/testing';
+import { of, throwError } from '@app/common';
 import { UserDeleteHandler } from './user-delete.handler';
 import { UserDeleteCommand } from './user-delete.command';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of, throwError } from 'rxjs';
 
 describe('UserDeleteHandler', () => {
   let handler: UserDeleteHandler;
@@ -38,7 +38,7 @@ describe('UserDeleteHandler', () => {
     const command = new UserDeleteCommand({ id });
 
     // Act
-    handler.delete(id);
+    handler.delete(command);
 
     // Assert
     expect(clientProxyMock.send).toHaveBeenCalledWith(commandName, command);
@@ -49,9 +49,10 @@ describe('UserDeleteHandler', () => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     clientProxyMock.send.mockReturnValue(of(void 0));
+    const command = new UserDeleteCommand({ id });
 
     // Act
-    const cut = handler.delete(id);
+    const cut = handler.delete(command);
 
     cut.subscribe({
       next(value) {
@@ -68,9 +69,10 @@ describe('UserDeleteHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const error = { statusCode: 404, message: 'User Not Found' };
     clientProxyMock.send.mockReturnValue(throwError(error));
+    const command = new UserDeleteCommand({ id });
 
     // Act
-    const cut = handler.delete(id);
+    const cut = handler.delete(command);
 
     cut.subscribe({
       error(err) {

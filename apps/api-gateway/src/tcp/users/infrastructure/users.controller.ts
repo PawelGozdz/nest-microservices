@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { Controller, Get, Post, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Observable, RequiredBody } from '@app/common';
+import { CreateUserDto, CreateUserResponse } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IdDto } from './dto/id.dto';
-import { RequiredBody } from '@app/common';
 import {
   UserCreateCommand,
   UserDeleteCommand,
@@ -11,13 +10,22 @@ import {
   UserFindOneCommand,
   UserUpdateCommand,
 } from '../application';
+import { IUsersService } from '../domain';
+import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { FindOneUserResponse } from './dto';
 
+@ApiTags('API Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: IUsersService) {}
 
+  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({
+    description: `Successfully created user`,
+    type: [CreateUserResponse],
+  })
   @Post()
-  create(@RequiredBody() dto: CreateUserDto) {
+  create(@RequiredBody() dto: CreateUserDto): Observable<CreateUserResponse> {
     return this.usersService.create(
       new UserCreateCommand({
         email: dto.email,
@@ -26,13 +34,23 @@ export class UsersController {
     );
   }
 
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: `Successfully return multiple users data`,
+    type: [FindOneUserResponse],
+  })
   @Get()
-  findAll() {
+  findAll(): Observable<FindOneUserResponse[]> {
     return this.usersService.findMany(new UserFindManyCommand({}));
   }
 
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: `Successfully return user data`,
+    type: FindOneUserResponse,
+  })
   @Get(':id')
-  findOne(@Param() paramDto: IdDto) {
+  findOne(@Param() paramDto: IdDto): Observable<FindOneUserResponse> {
     return this.usersService.findOne(
       new UserFindOneCommand({
         id: paramDto.id,
@@ -40,6 +58,8 @@ export class UsersController {
     );
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
   @Patch(':id')
   update(@Param() paramDto: IdDto, @RequiredBody() dto: UpdateUserDto) {
     return this.usersService.update(
@@ -51,6 +71,8 @@ export class UsersController {
     );
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
   @Delete(':id')
   async remove(@Param() dto: IdDto) {
     return this.usersService.delete(

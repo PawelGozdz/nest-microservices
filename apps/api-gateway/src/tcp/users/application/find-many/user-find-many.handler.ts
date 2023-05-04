@@ -1,23 +1,24 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { ClientProxy } from '@nestjs/microservices';
+import { Observable } from '@app/common';
 import { PinoLogger } from 'nestjs-pino';
-import { Observable } from 'rxjs';
 import { UserFindManyCommand } from './user-find-many.command';
+import { IClientProxy } from '../../domain';
+import { IUser } from '@app/ddd';
 
 @Injectable()
 export class UserFindManyHandler {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: ClientProxy,
+    @Inject(ServiceNameEnum.USERS) private readonly usersClient: IClientProxy,
     private logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name);
   }
 
-  findMany(command: UserFindManyCommand): Observable<any> {
+  findMany(command: UserFindManyCommand): Observable<IUser[]> {
     this.logger.debug(command, `Processing Find Many`);
 
-    return this.usersClient.send(
+    return this.usersClient.send<IUser[], UserFindManyCommand>(
       { cmd: UsersCommandPatternEnum.USER_FIND_MANY },
       new UserFindManyCommand({}),
     );

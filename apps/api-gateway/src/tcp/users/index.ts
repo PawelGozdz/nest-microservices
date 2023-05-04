@@ -1,3 +1,3 @@
-export * from './infrastructure';
+export { UsersModule } from './infrastructure';
 export * from './application';
 export * from './domain';

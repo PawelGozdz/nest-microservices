@@ -4,7 +4,7 @@ import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
 import { ServiceNameEnum } from '@app/microservices';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -16,13 +16,14 @@ import {
 } from '../application';
 import { IUsersService } from '../domain/users-service.interface';
 import { EnvConfig } from '../../../infrastructure';
+import { IClientProxy } from '../domain/client-proxy.interface';
 
 const handlers = [
   UserCreateHandler,
-  UserDeleteHandler,
-  UserFindManyHandler,
-  UserFindOneHandler,
   UserUpdateHandler,
+  UserDeleteHandler,
+  UserFindOneHandler,
+  UserFindManyHandler,
 ];
 
 const tlsOptions = {
@@ -55,9 +56,12 @@ const tlsOptions = {
       provide: IUsersService,
       useClass: UsersService,
     },
-    // UsersService,
+    {
+      provide: IClientProxy,
+      useValue: ClientProxy,
+    },
     ...handlers,
   ],
-  exports: [UsersService],
+  exports: [],
 })
 export class UsersModule {}

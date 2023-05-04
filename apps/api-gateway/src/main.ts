@@ -19,7 +19,7 @@ async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(
     app,
     UsersModule,
-    '/users/api-docs',
+    '/api/users/api-docs',
     'Users Service',
     'Rest API documentation of Users Service',
   );
