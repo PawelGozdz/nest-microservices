@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
 import { PinoLogger } from 'nestjs-pino';
-import { Observable } from '@app/common';
 import { UserUpdateCommand } from './user-update.command';
-import { IUser } from '@app/ddd';
 import { IClientProxy } from '../../domain';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class UserUpdateHandler {
@@ -15,10 +14,10 @@ export class UserUpdateHandler {
     logger.setContext(this.constructor.name);
   }
 
-  update(command: UserUpdateCommand): Observable<IUser> {
+  update(command: UserUpdateCommand): Observable<void> {
     this.logger.debug(command, `Processing Update User`);
 
-    return this.usersClient.send<IUser, UserUpdateCommand>(
+    return this.usersClient.send<void, UserUpdateCommand>(
       { cmd: UsersCommandPatternEnum.USER_UPDATE },
       new UserUpdateCommand({
         email: command.email,

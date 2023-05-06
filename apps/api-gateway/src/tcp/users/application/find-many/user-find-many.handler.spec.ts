@@ -3,10 +3,10 @@ import { Test } from '@nestjs/testing';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of } from '@app/common';
 import { UserFindManyHandler } from './user-find-many.handler';
 import { UserFindManyCommand } from './user-find-many.command';
 import { IUser } from '@app/ddd';
+import { of } from 'rxjs';
 
 describe('UserFindManyHandler', () => {
   let handler: UserFindManyHandler;

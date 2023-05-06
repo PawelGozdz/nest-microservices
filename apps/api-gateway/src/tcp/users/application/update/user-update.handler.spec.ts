@@ -3,7 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { createMock } from '@golevelup/ts-jest';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of, throwError } from '@app/common';
+import { of, throwError } from 'rxjs';
 import { IUser } from '@app/ddd';
 import { UserUpdateHandler } from './user-update.handler';
 import { UserUpdateCommand } from './user-update.command';

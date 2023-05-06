@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { Observable } from '@app/common';
+import { Observable } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { UserCreateCommand } from './user-create.command';
 import { IClientProxy } from '../../domain';

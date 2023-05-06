@@ -10,8 +10,6 @@ export const validationSchema = Joi.object<EnvConfig, true, EnvConfig>({
   USE_SWAGGER: Joi.boolean().default(false),
   USE_COMPRESSION: Joi.boolean().required().default(true),
 
-  DB_NAME: Joi.string().required(),
-  DB_URI: Joi.string().required(),
   LOG_LEVEL: Joi.string().required().default('info'),
   APP_VERSION: Joi.string().required(),
 

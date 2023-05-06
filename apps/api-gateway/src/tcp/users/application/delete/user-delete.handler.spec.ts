@@ -1,6 +1,6 @@
 import { createMock } from '@golevelup/ts-jest';
 import { Test } from '@nestjs/testing';
-import { of, throwError } from '@app/common';
+import { of, throwError } from 'rxjs';
 import { UserDeleteHandler } from './user-delete.handler';
 import { UserDeleteCommand } from './user-delete.command';
 import { ClientProxy } from '@nestjs/microservices';

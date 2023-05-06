@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
 import { PinoLogger } from 'nestjs-pino';
-import { Observable } from '@app/common';
+import { Observable } from 'rxjs';
 import { UserDeleteCommand } from './user-delete.command';
 import { IClientProxy } from '../../domain';
 

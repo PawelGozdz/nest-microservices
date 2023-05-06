@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of, throwError } from '@app/common';
+import { of, throwError } from 'rxjs';
 import { UserFindOneHandler } from './user-find-one.handler';
 import { UserFindOneCommand } from './user-find-one.command';
 import { IUser } from '@app/ddd';

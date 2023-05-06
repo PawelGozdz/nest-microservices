@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { Observable } from '@app/common';
+import { Observable } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { UserFindManyCommand } from './user-find-many.command';
 import { IClientProxy } from '../../domain';
@@ -20,7 +20,7 @@ export class UserFindManyHandler {
 
     return this.usersClient.send<IUser[], UserFindManyCommand>(
       { cmd: UsersCommandPatternEnum.USER_FIND_MANY },
-      new UserFindManyCommand({}),
+      new UserFindManyCommand(),
     );
   }
 }

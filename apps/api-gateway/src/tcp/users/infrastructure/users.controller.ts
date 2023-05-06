@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
-import { Observable, RequiredBody } from '@app/common';
+import { RequiredBody } from '@app/common';
 import { CreateUserDto, CreateUserResponse } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IdDto } from './dto/id.dto';
@@ -13,6 +13,7 @@ import {
 import { IUsersService } from '../domain';
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FindOneUserResponse } from './dto';
+import { Observable } from 'rxjs';
 
 @ApiTags('API Users')
 @Controller('users')
@@ -41,7 +42,7 @@ export class UsersController {
   })
   @Get()
   findAll(): Observable<FindOneUserResponse[]> {
-    return this.usersService.findMany(new UserFindManyCommand({}));
+    return this.usersService.findMany(new UserFindManyCommand());
   }
 
   @HttpCode(HttpStatus.OK)
@@ -61,7 +62,7 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse()
   @Patch(':id')
-  update(@Param() paramDto: IdDto, @RequiredBody() dto: UpdateUserDto) {
+  update(@Param() paramDto: IdDto, @RequiredBody() dto: UpdateUserDto): Observable<void> {
     return this.usersService.update(
       new UserUpdateCommand({
         id: paramDto.id,
@@ -74,7 +75,7 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse()
   @Delete(':id')
-  async remove(@Param() dto: IdDto) {
+  delete(@Param() dto: IdDto): Observable<void> {
     return this.usersService.delete(
       new UserDeleteCommand({
         id: dto.id,

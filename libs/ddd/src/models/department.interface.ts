@@ -1,5 +1,9 @@
+import { IUser } from './user.interface';
+
 export class IDepartment {
   id: string;
-  email: string;
-  username: string;
+  name: string;
+  users: IUser[];
+  createdAt: Date;
+  updatedAt: Date;
 }

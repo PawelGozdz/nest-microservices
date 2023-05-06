@@ -1,8 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { Observable } from 'rxjs';
-import { FindManyUserDto } from './dto';
 import { IUsersService } from '../domain/users-service.interface';
 import {
   UserCreateCommand,
@@ -40,7 +37,7 @@ export class UsersService implements IUsersService {
     return this.userFindOneHandler.findOne(command);
   }
 
-  update(command: UserUpdateCommand): Observable<any> {
+  update(command: UserUpdateCommand): Observable<void> {
     return this.userUpdateHandler.update(command);
   }
 

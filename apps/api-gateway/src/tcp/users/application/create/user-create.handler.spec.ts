@@ -5,7 +5,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
 import { createMock } from '@golevelup/ts-jest';
 import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
-import { of, throwError } from '@app/common';
+import { of, throwError } from 'rxjs';
 
 describe('UserCreateHandler', () => {
   let handler: UserCreateHandler;
