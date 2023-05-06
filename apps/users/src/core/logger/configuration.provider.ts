@@ -1,9 +1,9 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { EnvironmentEnum } from '@app/common';
+import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { Params } from 'nestjs-pino';
-import { EnvConfig } from '../config';
-import { ConfigService } from '@nestjs/config';
+import { EnvConfig } from '../../config';
 
 @Injectable()
 export class ConfigurationProvider {

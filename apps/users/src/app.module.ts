@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { EnvironmentConfigModule as ConfigModule } from './infrastructure/config';
+import { EnvironmentConfigModule as ConfigModule } from './config';
 import { UsersModule } from './services';
-import { DatabaseModule, LoggerModule } from './infrastructure';
+import { LoggerModule } from './core';
+import { DatabaseModule } from './database';
 
 @Module({
   imports: [ConfigModule, UsersModule, LoggerModule, DatabaseModule],

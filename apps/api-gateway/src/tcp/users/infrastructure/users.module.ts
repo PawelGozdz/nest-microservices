@@ -2,11 +2,11 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
-import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
 import { ServiceNameEnum } from '@app/microservices';
 import { ConfigService } from '@nestjs/config';
+import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
+import { UsersService } from './users.service';
+import { UsersController } from './users.controller';
 import {
   UserCreateHandler,
   UserDeleteHandler,
@@ -15,7 +15,7 @@ import {
   UserUpdateHandler,
 } from '../application';
 import { IUsersService } from '../domain/users-service.interface';
-import { EnvConfig } from '../../../infrastructure';
+import { EnvConfig } from '../../../config';
 import { IClientProxy } from '../domain/client-proxy.interface';
 
 const handlers = [
@@ -26,11 +26,14 @@ const handlers = [
   UserFindManyHandler,
 ];
 
+const appPath = 'apps/api-gateway';
+const certPath = 'certs';
+
 const tlsOptions = {
-  rejectUnauthorized: false,
-  ca: readFileSync(join(__dirname, '../../..', 'apps/api-gateway/certs', 'ca.crt')),
-  key: readFileSync(join(__dirname, '../../..', 'apps/api-gateway/certs', 'client.key')),
-  cert: readFileSync(join(__dirname, '../../..', 'apps/api-gateway/certs', 'client.crt')),
+  rejectUnauthorized: true,
+  ca: readFileSync(join(process.cwd(), appPath, certPath, 'ca.crt')),
+  key: readFileSync(join(process.cwd(), appPath, certPath, 'client.key')),
+  cert: readFileSync(join(process.cwd(), appPath, certPath, 'client.crt')),
 };
 
 @Module({

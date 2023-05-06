@@ -1,6 +1,6 @@
+import { RpcException } from '@nestjs/microservices';
 import { EntityId } from './id.value-object';
 import { tryAct } from '@app/testing';
-import { BadRequestException } from '@nestjs/common';
 
 describe('Id Value Object', () => {
   it('should create proper id', () => {
@@ -15,7 +15,7 @@ describe('Id Value Object', () => {
 
     expect(error).toBeDefined();
     expect(error).toEqual(
-      new BadRequestException(`Entity identifier ${wrongEntityId} is not a valid UUID`),
+      new RpcException(`Entity identifier ${wrongEntityId} is not a valid UUID`),
     );
   });
 
@@ -23,6 +23,6 @@ describe('Id Value Object', () => {
     const { error } = tryAct(() => EntityId.create(''));
 
     expect(error).toBeDefined();
-    expect(error).toEqual(new BadRequestException('Missing entity identifier'));
+    expect(error).toEqual(new RpcException('Missing entity identifier'));
   });
 });

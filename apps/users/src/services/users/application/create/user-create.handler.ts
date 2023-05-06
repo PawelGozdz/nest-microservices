@@ -35,6 +35,8 @@ export class UserCreateHandler {
 
     await this.usersCommandRepository.save(user);
 
+    // EMit to Rabbig Mq
+
     return { id: user.id };
   }
 }

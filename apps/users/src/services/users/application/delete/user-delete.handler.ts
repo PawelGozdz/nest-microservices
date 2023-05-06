@@ -25,6 +25,8 @@ export class UserDeleteHandler {
       });
     }
 
+    await this.usersCommandRepository.delete(user.id);
+
     // Emit to Rabbit Mq
 
     return;

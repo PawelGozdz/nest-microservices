@@ -3,17 +3,20 @@ import { join } from 'path';
 
 import { NestApplicationOptions } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { config as configuration } from './src/infrastructure';
+import { config as configuration } from './src/config';
 
 export const nestApplicationOptions: NestApplicationOptions = {
   bufferLogs: true,
 };
 
+const appPath = 'apps/users';
+const certPath = 'certs';
+
 const tlsOptions = {
   rejectUnauthorized: true,
-  ca: readFileSync(join(process.cwd(), 'apps/users/certs', 'ca.key')),
-  key: readFileSync(join(process.cwd(), 'apps/users/certs', 'server.key')),
-  cert: readFileSync(join(process.cwd(), 'apps/users/certs', 'server.crt')),
+  ca: readFileSync(join(process.cwd(), appPath, certPath, 'ca.key')),
+  key: readFileSync(join(process.cwd(), appPath, certPath, 'server.key')),
+  cert: readFileSync(join(process.cwd(), appPath, certPath, 'server.crt')),
 };
 
 export const nestApplicationMicroserviceOptions = (): MicroserviceOptions => {

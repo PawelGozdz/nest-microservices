@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
-import { EnvConfig } from './env-variable.interface';
 import { EnvironmentEnum } from '@app/common';
+import { EnvConfig } from './env-variable.interface';
 
 export const validationSchema = Joi.object<EnvConfig, true, EnvConfig>({
   NODE_ENV: Joi.string()

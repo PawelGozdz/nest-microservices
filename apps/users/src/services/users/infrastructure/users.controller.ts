@@ -9,7 +9,7 @@ import {
   UserFindOneCommand,
   UserUpdateCommand,
 } from '../application';
-import { EntityId } from '../../../infrastructure';
+import { EntityId } from '../../../core/value-objects';
 
 @Controller()
 export class UsersController {

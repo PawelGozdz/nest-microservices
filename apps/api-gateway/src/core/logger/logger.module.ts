@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule as LoggerPinoModule } from 'nestjs-pino';
-import { EnvironmentConfigModule } from '../config';
 import { ConfigurationProvider, configProviders } from './configuration.provider';
+import { EnvironmentConfigModule } from '../../config';
 
 @Module({
   imports: [

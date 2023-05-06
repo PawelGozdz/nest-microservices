@@ -4,7 +4,6 @@ import { join } from 'path';
 import { validationSchema } from './validation';
 import { EnvConfig } from './env-variable.interface';
 
-@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({

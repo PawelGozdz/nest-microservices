@@ -1,5 +1,5 @@
 import { IUser } from '@app/ddd';
-import { EntityId } from '../../../../infrastructure';
+import { EntityId } from '../../../../core/value-objects';
 
 export class UserFixture implements IUser {
   id: string;
