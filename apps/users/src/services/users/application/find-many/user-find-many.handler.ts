@@ -3,6 +3,7 @@ import { PinoLogger } from 'nestjs-pino';
 import { UserFindManyCommand } from './user-find-many.command';
 import { IUser } from '@app/ddd';
 import { IUsersQueryRepository } from '../../domain';
+import { EntityId } from '../../../../core';
 
 @Injectable()
 export class UserFindManyHandler {
@@ -16,7 +17,13 @@ export class UserFindManyHandler {
   async findMany(command: UserFindManyCommand): Promise<IUser[]> {
     this.logger.debug(command, `Processing Find Many`);
 
-    const users = await this.usersQueryRepository.findMany();
+    const departmentId = EntityId.create(command.departmentId);
+
+    const users = await this.usersQueryRepository.findMany({
+      where: {
+        departmentId: departmentId.value,
+      },
+    });
 
     return users;
   }

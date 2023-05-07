@@ -1,12 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { nestApplicationOptions } from './nest-app-configuration';
 import { Logger } from 'nestjs-pino';
-// import { HealthMetricsModule } from './health-metrics.module';
+import { RmqService, TcpUsersService } from './core';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    ...nestApplicationOptions,
+  });
+
+  const tcpUsersService = app.get(TcpUsersService);
+  tcpUsersService.getOptions().map((opt) => app.connectMicroservice(opt));
+
+  const rmqService = app.get(RmqService);
+  rmqService.getOptions().map((opt) => app.connectMicroservice(opt));
+
   app.useLogger(app.get(Logger));
-  // const healthMetricsApp = await NestFactory.create(HealthMetricsModule);
-  await app.listen(3000);
+  app.enableShutdownHooks();
+
+  await app.startAllMicroservices();
 }
-bootstrap();
+bootstrap().catch((err) => {
+  console.error(err, 'Error while bootstrapping an application');
+  process.exit(1);
+});

@@ -2,14 +2,17 @@ import { UsersCommandPatternEnum } from '../../enums';
 
 interface User {
   id: string;
+  departmentId: string;
 }
 
 export abstract class IUserDeleteCommand<T extends User = User> {
-  protected type: UsersCommandPatternEnum.USER_DELETE;
+  static type: UsersCommandPatternEnum.USER_DELETE;
 
   public id: string;
+  public departmentId: string;
 
-  constructor({ id }: T) {
+  constructor({ id, departmentId }: T) {
     this.id = id;
+    this.departmentId = departmentId;
   }
 }

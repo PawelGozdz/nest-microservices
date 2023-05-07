@@ -1,17 +1,20 @@
 import { IUser } from '@app/ddd';
-import { EntityId } from '../../../core/value-objects';
 
 interface Id {
-  id: EntityId;
+  id: string;
+  departmentId: string;
 }
 
 interface UserCreate {
   email: string;
   username: string;
+  departmentId: string;
 }
 
 interface UserUpdate {
-  id: EntityId;
+  id: string;
+  departmentId: string;
+  updatedDepartmentId?: string;
   email?: string;
   username?: string;
 }

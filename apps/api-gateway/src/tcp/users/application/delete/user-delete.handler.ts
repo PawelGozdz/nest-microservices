@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
+import { ServiceNameEnum, UsersCommandPatternEnum, IClientProxy } from '@app/microservices';
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
 import { UserDeleteCommand } from './user-delete.command';
-import { IClientProxy } from '../../domain';
 
 @Injectable()
 export class UserDeleteHandler {
@@ -21,6 +20,7 @@ export class UserDeleteHandler {
       { cmd: UsersCommandPatternEnum.USER_DELETE },
       new UserDeleteCommand({
         id: command.id,
+        departmentId: command.departmentId,
       }),
     );
   }

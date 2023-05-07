@@ -9,45 +9,53 @@ import {
   UserFindOneCommand,
   UserUpdateCommand,
 } from '../application';
-import { EntityId } from '../../../core/value-objects';
 
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: IUsersService) {}
 
   @MessagePattern({ cmd: UsersCommandPatternEnum.USER_CREATE })
-  handleUserCreate(@Payload() { email, username }: UserCreateCommand) {
+  handleUserCreate(@Payload() { email, username, departmentId }: UserCreateCommand) {
     return this.usersService.create({
       email,
       username,
+      departmentId,
     });
   }
 
   @MessagePattern({ cmd: UsersCommandPatternEnum.USER_UPDATE })
-  handleUserUpdate(@Payload() { id, username, email }: UserUpdateCommand) {
+  handleUserUpdate(
+    @Payload() { id, username, email, departmentId, updatedDepartmentId }: UserUpdateCommand,
+  ) {
     return this.usersService.update({
-      id: new EntityId(id),
+      id,
       email,
       username,
+      departmentId,
+      updatedDepartmentId,
     });
   }
 
   @MessagePattern({ cmd: UsersCommandPatternEnum.USER_FIND_MANY })
-  handleUserFindMany(@Payload() payload: UserFindManyCommand) {
-    return this.usersService.findMany(payload);
+  handleUserFindMany(@Payload() { departmentId }: UserFindManyCommand) {
+    return this.usersService.findMany({
+      departmentId,
+    });
   }
 
   @MessagePattern({ cmd: UsersCommandPatternEnum.USER_FIND_ONE })
-  handleUserFindOne(@Payload() { id }: UserFindOneCommand) {
+  handleUserFindOne(@Payload() { id, departmentId }: UserFindOneCommand) {
     return this.usersService.findOne({
-      id: new EntityId(id),
+      id,
+      departmentId,
     });
   }
 
   @MessagePattern({ cmd: UsersCommandPatternEnum.USER_DELETE })
-  handleUserDelete(@Payload() { id }: UserDeleteCommand) {
+  handleUserDelete(@Payload() { id, departmentId }: UserDeleteCommand) {
     return this.usersService.delete({
-      id: new EntityId(id),
+      id,
+      departmentId,
     });
   }
 }

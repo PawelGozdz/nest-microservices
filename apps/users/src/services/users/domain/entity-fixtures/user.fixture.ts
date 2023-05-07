@@ -3,6 +3,7 @@ import { EntityId } from '../../../../core/value-objects';
 
 export class UserFixture implements IUser {
   id: string;
+  departmentId: string;
   email: string;
   username: string;
   createdAt: Date;
@@ -10,12 +11,14 @@ export class UserFixture implements IUser {
 
   constructor(
     id: string,
+    departmentId: string,
     email: string,
     username: string,
     createdAt: Date = new Date(),
     updatedAt: Date = new Date(),
   ) {
     this.id = id;
+    this.departmentId = departmentId;
     this.email = email;
     this.username = username;
     this.createdAt = createdAt;
@@ -24,19 +27,22 @@ export class UserFixture implements IUser {
 
   static create({
     id,
+    departmentId,
     email,
     username,
     createdAt,
     updatedAt,
   }: {
-    id?: EntityId;
+    id?: string;
+    departmentId: string;
     email: string;
     username: string;
     createdAt?: Date;
     updatedAt?: Date;
   }): IUser {
     const user = new UserFixture(
-      id?.value ? EntityId.create(id.value).value : EntityId.createRandom().value,
+      id ? EntityId.create(id).value : EntityId.createRandom().value,
+      EntityId.create(departmentId).value,
       email,
       username,
       createdAt,

@@ -1,0 +1,101 @@
+version: '3'
+
+services:
+  api-gateway:
+    container_name: api_gateway_service
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile
+      target: development
+    command: npm run start:dev api-gateway
+    env_file:
+      - ./apps/api-gateway/.env
+    networks:
+      - app_network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+
+  users:
+    container_name: users_service
+    build:
+      context: .
+      dockerfile: ./apps/users/Dockerfile
+      target: development
+    command: npm run start:dev users
+    env_file:
+      - ./apps/users/.env
+    depends_on:
+      - postgres_users
+      - rabbitmq
+    networks:
+      - app_network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3011:3011'
+
+  # departments:
+  #   container_name: departments_service
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/departments/Dockerfile
+  #     target: development
+  #   command: npm run start:dev departments
+  #   env_file:
+  #     - ./apps/departments/.env
+  #   depends_on:
+  #     - postgres_departments
+  #     - rabbitmq
+  #   networks:
+  #     - app_network
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   ports:
+  #     - '3011:3011'
+
+  postgres_users:
+    image: postgres
+    container_name: postgres_users_db
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      # POSTGRES_DATABASE: users_db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres_users:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  # postgres_departments:
+  #   image: postgres
+  #   container_name: postgres_departments_db
+  #   environment:
+  #     POSTGRES_USER: ${DB_NAME}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_DATABASE: ${DB_DATABASE}
+  #   ports:
+  #     - 5433:5432
+  #   volumes:
+  #     - ./data/postgres_departments:/var/lib/postgresql/data
+  #   networks:
+  #     - app_network
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - app_network
+
+networks:
+  app_network:

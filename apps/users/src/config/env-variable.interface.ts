@@ -17,4 +17,6 @@ export type EnvConfig = {
   USERS_HOST: string;
   USERS_PORT: number;
   USERS_TLS_CONNECTION: boolean;
+
+  RABBIT_MQ_URI: string;
 };

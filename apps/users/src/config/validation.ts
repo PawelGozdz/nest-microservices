@@ -21,4 +21,6 @@ export const validationSchema = Joi.object<EnvConfig, true, EnvConfig>({
   USERS_HOST: Joi.string().required(),
   USERS_PORT: Joi.number().required(),
   USERS_TLS_CONNECTION: Joi.boolean().required().default(true),
+
+  RABBIT_MQ_URI: Joi.string().required(),
 });

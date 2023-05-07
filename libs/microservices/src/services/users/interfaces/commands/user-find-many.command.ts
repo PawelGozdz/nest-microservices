@@ -1,12 +1,15 @@
 import { UsersCommandPatternEnum } from '../../enums';
 
 interface User {
-  email?: string;
-  username?: string;
+  departmentId: string;
 }
 
 export abstract class IUserFindManyCommand<T extends User = User> {
-  protected type: UsersCommandPatternEnum.USER_FIND_MANY;
+  static type: UsersCommandPatternEnum.USER_FIND_MANY;
 
-  constructor() {}
+  public departmentId: string;
+
+  constructor({ departmentId }: T) {
+    this.departmentId = departmentId;
+  }
 }

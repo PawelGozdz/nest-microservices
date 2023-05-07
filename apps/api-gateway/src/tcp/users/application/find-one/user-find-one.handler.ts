@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
+import { ServiceNameEnum, UsersCommandPatternEnum, IClientProxy } from '@app/microservices';
 import { Observable } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { UserFindOneCommand } from './user-find-one.command';
 import { IUser } from '@app/ddd';
-import { IClientProxy } from '../../domain';
 
 @Injectable()
 export class UserFindOneHandler {
@@ -22,6 +21,7 @@ export class UserFindOneHandler {
       { cmd: UsersCommandPatternEnum.USER_FIND_ONE },
       new UserFindOneCommand({
         id: command.id,
+        departmentId: command.departmentId,
       }),
     );
   }

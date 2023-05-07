@@ -31,11 +31,12 @@ describe('UserDeleteHandler', () => {
   it('should send event', () => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
     const commandName = {
       cmd: UsersCommandPatternEnum.USER_DELETE,
     };
-    const command = new UserDeleteCommand({ id });
+    const command = new UserDeleteCommand({ id, departmentId });
 
     // Act
     handler.delete(command);
@@ -48,8 +49,10 @@ describe('UserDeleteHandler', () => {
   it('should return void', (done) => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+
     clientProxyMock.send.mockReturnValue(of(void 0));
-    const command = new UserDeleteCommand({ id });
+    const command = new UserDeleteCommand({ id, departmentId });
 
     // Act
     const cut = handler.delete(command);
@@ -68,8 +71,10 @@ describe('UserDeleteHandler', () => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const error = { statusCode: 404, message: 'User Not Found' };
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+
     clientProxyMock.send.mockReturnValue(throwError(error));
-    const command = new UserDeleteCommand({ id });
+    const command = new UserDeleteCommand({ id, departmentId });
 
     // Act
     const cut = handler.delete(command);

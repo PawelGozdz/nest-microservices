@@ -1,8 +1,5 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
-
 import { Module } from '@nestjs/common';
-import { ServiceNameEnum } from '@app/microservices';
+import { IClientProxy, ServiceNameEnum } from '@app/microservices';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
 import { UsersService } from './users.service';
@@ -16,7 +13,6 @@ import {
 } from '../application';
 import { IUsersService } from '../domain/users-service.interface';
 import { EnvConfig } from '../../../config';
-import { IClientProxy } from '../domain/client-proxy.interface';
 
 const handlers = [
   UserCreateHandler,
@@ -25,16 +21,6 @@ const handlers = [
   UserFindOneHandler,
   UserFindManyHandler,
 ];
-
-const appPath = 'apps/api-gateway';
-const certPath = 'certs';
-
-const tlsOptions = {
-  rejectUnauthorized: true,
-  ca: readFileSync(join(process.cwd(), appPath, certPath, 'ca.crt')),
-  key: readFileSync(join(process.cwd(), appPath, certPath, 'client.key')),
-  cert: readFileSync(join(process.cwd(), appPath, certPath, 'client.crt')),
-};
 
 @Module({
   imports: [
@@ -46,7 +32,6 @@ const tlsOptions = {
           options: {
             host: config.get('USERS_HOST'),
             port: config.get('USERS_PORT'),
-            tlsOptions: config.get('USERS_TLS_CONNECTION') && tlsOptions,
           },
         }),
         inject: [ConfigService],

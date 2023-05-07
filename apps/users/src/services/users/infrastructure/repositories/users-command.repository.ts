@@ -52,6 +52,7 @@ export class UsersCommandRepository implements IUsersCommandRepository {
   mapResponse(user: UserEntity): IUser {
     return {
       id: user.id,
+      departmentId: user.departmentId,
       email: user.email,
       username: user.username,
       createdAt: user.createdAt,

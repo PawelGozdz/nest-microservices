@@ -1,9 +1,10 @@
 import { IUserFindOneCommand } from '@app/microservices';
 
 export class UserFindOneCommand extends IUserFindOneCommand {
-  constructor({ id }: { id: string }) {
+  constructor({ id, departmentId }: { id: string; departmentId: string }) {
     super({
       id,
+      departmentId,
     });
   }
 }

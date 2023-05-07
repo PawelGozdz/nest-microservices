@@ -32,11 +32,12 @@ describe('UserFindOneHandler', () => {
   it('should send event', () => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
     const commandName = {
       cmd: UsersCommandPatternEnum.USER_FIND_ONE,
     };
-    const command = new UserFindOneCommand({ id });
+    const command = new UserFindOneCommand({ id, departmentId });
 
     // Act
     handler.findOne(command);
@@ -51,13 +52,18 @@ describe('UserFindOneHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const email = 'test@test.com';
     const username = 'IamGroot';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+
     const user: IUser = {
       id,
       email,
       username,
+      departmentId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     clientProxyMock.send.mockReturnValue(of(user));
-    const command = new UserFindOneCommand({ id });
+    const command = new UserFindOneCommand({ id, departmentId });
 
     // Act
     const cut = handler.findOne(command);
@@ -75,9 +81,11 @@ describe('UserFindOneHandler', () => {
   it('should throw 404 if no user for given id', (done) => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+
     const error = { statusCode: 404, message: 'User Not Found' };
     clientProxyMock.send.mockReturnValue(throwError(error));
-    const command = new UserFindOneCommand({ id });
+    const command = new UserFindOneCommand({ id, departmentId });
 
     // Act
     const cut = handler.findOne(command);

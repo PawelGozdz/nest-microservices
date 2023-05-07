@@ -34,6 +34,7 @@ describe('UserUpdateHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const email = 'my@test.com';
     const username = 'My-username';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
     const commandName = {
       cmd: UsersCommandPatternEnum.USER_UPDATE,
@@ -42,6 +43,7 @@ describe('UserUpdateHandler', () => {
       id,
       email,
       username,
+      departmentId,
     });
 
     // Act
@@ -52,16 +54,32 @@ describe('UserUpdateHandler', () => {
     expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 
-  it('should update user email', (done) => {
+  it('should update user email and updatedDepartmentId', (done) => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const email = 'my@test.com';
     const username = 'My-username';
     const updatedEmail = 'updated-email@test.com';
-    const user: IUser = { id, email, username };
-    clientProxyMock.send.mockReturnValue(of({ ...user, email: updatedEmail }));
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+    const updatedDepartmentId = 'd4fa4040-610d-4637-a3d4-000000000000';
 
-    const command = new UserUpdateCommand({ email, username, id });
+    const user: IUser = {
+      id,
+      email,
+      username,
+      departmentId,
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    };
+    clientProxyMock.send.mockReturnValue(of({ ...user, email: updatedEmail, updatedDepartmentId }));
+
+    const command = new UserUpdateCommand({
+      email,
+      username,
+      id,
+      departmentId,
+      updatedDepartmentId,
+    });
 
     // Act
     const cut = handler.update(command);
@@ -73,6 +91,7 @@ describe('UserUpdateHandler', () => {
           id,
           username,
           email: updatedEmail,
+          departmentId: updatedDepartmentId,
         });
         done();
       },
@@ -84,10 +103,12 @@ describe('UserUpdateHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const email = 'my@test.com';
     const username = 'My-username';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+
     const error = { statusCode: 404, message: 'User Not Found' };
     clientProxyMock.send.mockReturnValue(throwError(error));
 
-    const command = new UserUpdateCommand({ email, username, id });
+    const command = new UserUpdateCommand({ email, username, id, departmentId });
 
     // Act
     const cut = handler.update(command);

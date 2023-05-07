@@ -8,11 +8,12 @@ import { AppValidationPipe } from '@app/common';
 import { AppModule } from './app.module';
 import { nestApplicationOptions } from './nest-app-configuration';
 
-import { UsersModule } from './tcp/users/infrastructure/users.module';
 import { SwaggerBuilder } from './swagger';
 import { EnvConfig } from './config';
 import { nestApplicationSecurityConfiguration } from './security';
 import { HttpExceptionFilter } from './core';
+
+import { UsersModule } from './tcp/users/infrastructure/users.module';
 
 async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(
@@ -32,6 +33,8 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
 
   nestApplicationSecurityConfiguration(app);
+
+  app.setGlobalPrefix('api');
 
   if (config.get<boolean>('USE_SWAGGER')) {
     await buildSwaggers(app);

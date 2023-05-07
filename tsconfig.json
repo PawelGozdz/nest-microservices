@@ -45,6 +45,18 @@
       ],
       "@app/testing/*": [
         "libs/testing/src/*"
+      ],
+      "@app/rmq": [
+        "libs/rmq/src"
+      ],
+      "@app/rmq/*": [
+        "libs/rmq/src/*"
+      ],
+      "@app/message-brokers": [
+        "libs/message-brokers/src"
+      ],
+      "@app/message-brokers/*": [
+        "libs/message-brokers/src/*"
       ]
     }
   }

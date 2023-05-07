@@ -31,12 +31,12 @@ describe('UserFindManyHandler', () => {
 
   it('should send event', () => {
     // Arrange
-    const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
     const commandName = {
       cmd: UsersCommandPatternEnum.USER_FIND_MANY,
     };
-    const command = new UserFindManyCommand({});
+    const command = new UserFindManyCommand({ departmentId });
 
     // Act
     handler.findMany(command);
@@ -51,13 +51,18 @@ describe('UserFindManyHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const email = 'test@test.com';
     const username = 'IamGroot';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
+
     const user: IUser = {
       id,
       email,
       username,
+      departmentId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     clientProxyMock.send.mockReturnValue(of([user]));
-    const command = new UserFindManyCommand({});
+    const command = new UserFindManyCommand({ departmentId });
 
     // Act
     const cut = handler.findMany(command);
@@ -74,9 +79,10 @@ describe('UserFindManyHandler', () => {
 
   it('should throw 404 if no user for given id', (done) => {
     // Arrange
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
     clientProxyMock.send.mockReturnValue(of([]));
-    const command = new UserFindManyCommand({});
+    const command = new UserFindManyCommand({ departmentId });
 
     // Act
     const cut = handler.findMany(command);

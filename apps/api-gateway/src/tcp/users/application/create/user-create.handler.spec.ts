@@ -32,6 +32,7 @@ describe('UserCreateHandler', () => {
     // Arrange
     const email = 'my@test.com';
     const username = 'My-username';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
     const commandName = {
       cmd: UsersCommandPatternEnum.USER_CREATE,
@@ -39,6 +40,7 @@ describe('UserCreateHandler', () => {
     const command = new UserCreateCommand({
       email,
       username,
+      departmentId,
     });
 
     // Act
@@ -55,8 +57,9 @@ describe('UserCreateHandler', () => {
     clientProxyMock.send.mockReturnValue(of({ id }));
     const email = 'my@test.com';
     const username = 'My-username';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
-    const command = new UserCreateCommand({ email, username });
+    const command = new UserCreateCommand({ email, username, departmentId });
 
     // Act
     const cut = handler.create(command);
@@ -77,8 +80,9 @@ describe('UserCreateHandler', () => {
 
     const email = 'my@test.com';
     const username = 'My-username';
+    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
 
-    const command = new UserCreateCommand({ email, username });
+    const command = new UserCreateCommand({ email, username, departmentId });
 
     // Act
     const cut = handler.create(command);

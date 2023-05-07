@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
+import { ServiceNameEnum, UsersCommandPatternEnum, IClientProxy } from '@app/microservices';
 import { Observable } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { UserCreateCommand } from './user-create.command';
-import { IClientProxy } from '../../domain';
 
 @Injectable()
 export class UserCreateHandler {
@@ -22,6 +21,7 @@ export class UserCreateHandler {
       new UserCreateCommand({
         email: command.email,
         username: command.username,
+        departmentId: command.departmentId,
       }),
     );
   }

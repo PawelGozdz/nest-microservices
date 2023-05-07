@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAlphanumeric, IsDefined, IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsAlphanumeric,
+  IsDefined,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Length,
+} from 'class-validator';
 
 export class UpdateUserDto {
   @ApiProperty({
@@ -19,4 +27,12 @@ export class UpdateUserDto {
   @Length(2, 15)
   @IsAlphanumeric()
   username: string;
+
+  @ApiProperty({
+    example: '333b041c-326d-459c-bb07-624b8163c693',
+  })
+  @IsOptional()
+  @IsDefined()
+  @IsUUID()
+  updatedDepartmentId: string;
 }

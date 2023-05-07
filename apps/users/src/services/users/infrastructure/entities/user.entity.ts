@@ -1,10 +1,13 @@
 import { IUser } from '@app/ddd';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class UserEntity implements IUser {
-  @Column({ unique: true, type: 'uuid' })
+  @PrimaryColumn({ unique: true, type: 'uuid' })
   id: string;
+
+  @Column({ type: 'uuid', nullable: false })
+  departmentId: string;
 
   @Column({ unique: true })
   email: string;
