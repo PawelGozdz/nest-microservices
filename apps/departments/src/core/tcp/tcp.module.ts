@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { TcpUsersService } from './tcp-users.service';
+import { TcpDepartmentsService } from './tcp-departments.service';
 
 @Module({
-  providers: [TcpUsersService],
-  exports: [TcpUsersService],
+  providers: [TcpDepartmentsService],
+  exports: [TcpDepartmentsService],
 })
 export class TcpModule {}

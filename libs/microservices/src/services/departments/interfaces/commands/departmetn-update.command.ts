@@ -1,14 +1,14 @@
 import { DepartmentsCommandPatternEnum } from '../../enums';
 
 interface Department {
-  name?: string;
+  name: string;
   id: string;
 }
 
 export abstract class IDepartmentUpdateCommand<T extends Department = Department> {
   static type: DepartmentsCommandPatternEnum.DEPARTMENT_UPDATE;
 
-  public name?: string;
+  public name: string;
   public id: string;
 
   constructor({ name, id }: T) {

@@ -6,16 +6,8 @@ export abstract class IUserCreatedEvent {
 
   public id: string;
   public departmentId: string;
-  public email: string;
-  public username: string;
-  public createdAt: Date;
-  public updatedAt: Date;
 
-  constructor({ email, username, id, createdAt, updatedAt, departmentId }: IUser) {
-    this.email = email;
-    this.username = username;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+  constructor({ id, departmentId }: Pick<IUser, 'id' | 'departmentId'>) {
     this.id = id;
     this.departmentId = departmentId;
   }

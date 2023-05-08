@@ -15,4 +15,14 @@ export class FindOneUserResponse {
     example: 'IamGroot',
   })
   username: string;
+
+  @ApiProperty({
+    example: new Date(),
+  })
+  updatedAt: Date;
+
+  @ApiProperty({
+    example: new Date(),
+  })
+  createdAt: Date;
 }

@@ -11,7 +11,6 @@ export const validationSchema = Joi.object<EnvConfig, true, EnvConfig>({
   USE_COMPRESSION: Joi.boolean().required().default(true),
   LOG_LEVEL: Joi.string().required().default('info'),
   APP_VERSION: Joi.string().required(),
-  TARGET_APP: Joi.string().required(),
 
   DB_NAME: Joi.string().required(),
   DB_HOST: Joi.string().required(),
@@ -19,9 +18,8 @@ export const validationSchema = Joi.object<EnvConfig, true, EnvConfig>({
   DB_USERNAME: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
 
-  USERS_HOST: Joi.string().required(),
-  USERS_PORT: Joi.number().required(),
-  USERS_TLS_CONNECTION: Joi.boolean().required().default(true),
+  DEPARTMENTS_HOST: Joi.string().required(),
+  DEPARTMENTS_PORT: Joi.number().required(),
 
   RABBIT_MQ_URI: Joi.string().required(),
 });

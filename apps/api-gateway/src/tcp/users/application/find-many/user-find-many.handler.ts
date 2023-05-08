@@ -8,7 +8,7 @@ import { IUser } from '@app/ddd';
 @Injectable()
 export class UserFindManyHandler {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: IClientProxy,
+    @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name);
@@ -17,7 +17,7 @@ export class UserFindManyHandler {
   findMany(command: UserFindManyCommand): Observable<IUser[]> {
     this.logger.debug(command, `Processing Find Many`);
 
-    return this.usersClient.send<IUser[], UserFindManyCommand>(
+    return this.client.send<IUser[], UserFindManyCommand>(
       { cmd: UsersCommandPatternEnum.USER_FIND_MANY },
       new UserFindManyCommand({
         departmentId: command.departmentId,

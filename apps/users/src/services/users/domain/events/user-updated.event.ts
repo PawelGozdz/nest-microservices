@@ -2,14 +2,10 @@ import { IUser } from '@app/ddd';
 import { IUserUpdatedEvent } from '@app/microservices';
 
 export class UserUpdatedEvent extends IUserUpdatedEvent {
-  constructor({ email, username, createdAt, id, updatedAt, departmentId }: IUser) {
+  constructor({ id, departmentId }: Pick<IUser, 'id' | 'departmentId'>) {
     super({
       id,
       departmentId,
-      email,
-      username,
-      updatedAt,
-      createdAt,
     });
   }
 }

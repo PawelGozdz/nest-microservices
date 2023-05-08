@@ -7,7 +7,7 @@ import { UserCreateCommand } from './user-create.command';
 @Injectable()
 export class UserCreateHandler {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: IClientProxy,
+    @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name);
@@ -16,7 +16,7 @@ export class UserCreateHandler {
   create(command: UserCreateCommand): Observable<{ id: string }> {
     this.logger.debug(command, `Processing Create User`);
 
-    return this.usersClient.send<{ id: string }, UserCreateCommand>(
+    return this.client.send<{ id: string }, UserCreateCommand>(
       { cmd: UsersCommandPatternEnum.USER_CREATE },
       new UserCreateCommand({
         email: command.email,

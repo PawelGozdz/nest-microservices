@@ -10,5 +10,7 @@ export type EnvConfig = {
 
   USERS_HOST: string;
   USERS_PORT: number;
-  USERS_TLS_CONNECTION: boolean;
+
+  DEPARTMENTS_HOST: string;
+  DEPARTMENTS_PORT: number;
 };

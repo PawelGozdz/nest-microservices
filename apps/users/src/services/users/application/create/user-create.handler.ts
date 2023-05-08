@@ -5,7 +5,6 @@ import { UserFixture } from '../../domain/entity-fixtures';
 import { IUsersCommandRepository, UserCreatedEvent } from '../../domain';
 import { RpcException } from '@nestjs/microservices';
 import { IClientProxy, UsersEventPatternEnum, ServiceNameEnum } from '@app/microservices';
-import { IUser } from '@app/ddd';
 
 @Injectable()
 export class UserCreateHandler {
@@ -41,15 +40,11 @@ export class UserCreateHandler {
     await this.usersCommandRepository.save(user);
 
     // EMit to Rabbig Mq
-    this.rabbitMqClient.emit<UsersEventPatternEnum, IUser>(
+    this.rabbitMqClient.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
       UsersEventPatternEnum.USER_CREATED,
       new UserCreatedEvent({
         id: user.id,
         departmentId: user.departmentId,
-        email: user.email,
-        username: user.username,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
       }),
     );
 

@@ -8,7 +8,7 @@ import { IUser } from '@app/ddd';
 @Injectable()
 export class UserFindOneHandler {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: IClientProxy,
+    @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name);
@@ -17,7 +17,7 @@ export class UserFindOneHandler {
   findOne(command: UserFindOneCommand): Observable<IUser> {
     this.logger.debug(command, `Processing Find One`);
 
-    return this.usersClient.send<IUser, UserFindOneCommand>(
+    return this.client.send<IUser, UserFindOneCommand>(
       { cmd: UsersCommandPatternEnum.USER_FIND_ONE },
       new UserFindOneCommand({
         id: command.id,

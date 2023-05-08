@@ -14,6 +14,7 @@ import { nestApplicationSecurityConfiguration } from './security';
 import { HttpExceptionFilter } from './core';
 
 import { UsersModule } from './tcp/users/infrastructure/users.module';
+import { DepartmentsModule } from './tcp/departments/infrastructure';
 
 async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(
@@ -22,6 +23,13 @@ async function buildSwaggers(app: INestApplication) {
     '/api/users/api-docs',
     'Users Service',
     'Rest API documentation of Users Service',
+  );
+  await SwaggerBuilder.build(
+    app,
+    DepartmentsModule,
+    '/api/departments/api-docs',
+    'Departments Service',
+    'Rest API documentation of Departments Service',
   );
 }
 

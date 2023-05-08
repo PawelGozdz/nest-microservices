@@ -7,7 +7,7 @@ import { UserDeleteCommand } from './user-delete.command';
 @Injectable()
 export class UserDeleteHandler {
   constructor(
-    @Inject(ServiceNameEnum.USERS) private readonly usersClient: IClientProxy,
+    @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name);
@@ -16,7 +16,7 @@ export class UserDeleteHandler {
   delete(command: UserDeleteCommand): Observable<void> {
     this.logger.debug(command, `Processing Delete User`);
 
-    return this.usersClient.send<void, UserDeleteCommand>(
+    return this.client.send<void, UserDeleteCommand>(
       { cmd: UsersCommandPatternEnum.USER_DELETE },
       new UserDeleteCommand({
         id: command.id,

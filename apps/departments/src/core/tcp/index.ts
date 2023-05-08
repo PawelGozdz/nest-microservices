@@ -1,2 +1,2 @@
 export * from './tcp.module';
-export * from './tcp-users.service';
+export * from './tcp-departments.service';

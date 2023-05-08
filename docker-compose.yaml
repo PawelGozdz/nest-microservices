@@ -38,33 +38,35 @@ services:
     ports:
       - '3011:3011'
 
-  # departments:
-  #   container_name: departments_service
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/departments/Dockerfile
-  #     target: development
-  #   command: npm run start:dev departments
-  #   env_file:
-  #     - ./apps/departments/.env
-  #   depends_on:
-  #     - postgres_departments
-  #     - rabbitmq
-  #   networks:
-  #     - app_network
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   ports:
-  #     - '3011:3011'
+  departments:
+    container_name: departments_service
+    build:
+      context: .
+      dockerfile: ./apps/departments/Dockerfile
+      target: development
+    command: npm run start:dev departments
+    env_file:
+      - ./apps/departments/.env
+    depends_on:
+      - postgres_departments
+      - rabbitmq
+    networks:
+      - app_network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3012:3011'
 
   postgres_users:
     image: postgres
     container_name: postgres_users_db
+    env_file:
+      - ./apps/users/.env
     environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      # POSTGRES_DATABASE: users_db
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DATABASE: ${DB_NAME}
     ports:
       - 5432:5432
     volumes:
@@ -72,19 +74,21 @@ services:
     networks:
       - app_network
 
-  # postgres_departments:
-  #   image: postgres
-  #   container_name: postgres_departments_db
-  #   environment:
-  #     POSTGRES_USER: ${DB_NAME}
-  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
-  #     POSTGRES_DATABASE: ${DB_DATABASE}
-  #   ports:
-  #     - 5433:5432
-  #   volumes:
-  #     - ./data/postgres_departments:/var/lib/postgresql/data
-  #   networks:
-  #     - app_network
+  postgres_departments:
+    image: postgres
+    container_name: postgres_departments_db
+    env_file:
+      - ./apps/departments/.env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DATABASE: ${DB_NAME}
+    ports:
+      - 5433:5432
+    volumes:
+      - ./data/postgres_departments:/var/lib/postgresql/data
+    networks:
+      - app_network
 
   rabbitmq:
     container_name: rabbitmq

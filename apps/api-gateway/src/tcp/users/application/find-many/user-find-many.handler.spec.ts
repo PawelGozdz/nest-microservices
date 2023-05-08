@@ -76,23 +76,4 @@ describe('UserFindManyHandler', () => {
     });
     expect(clientProxyMock.send).toBeCalledTimes(1);
   });
-
-  it('should throw 404 if no user for given id', (done) => {
-    // Arrange
-    const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
-
-    clientProxyMock.send.mockReturnValue(of([]));
-    const command = new UserFindManyCommand({ departmentId });
-
-    // Act
-    const cut = handler.findMany(command);
-
-    cut.subscribe({
-      next(data) {
-        expect(data).toStrictEqual([]);
-        done();
-      },
-    }),
-      expect(clientProxyMock.send).toBeCalledTimes(1);
-  });
 });

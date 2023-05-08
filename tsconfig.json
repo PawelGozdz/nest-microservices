@@ -17,47 +17,16 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "typeRoots": [
-      "./typings",
-      "./node_modules/@types"
-    ],
+    "typeRoots": ["./typings", "./node_modules/@types"],
     "paths": {
-      "@app/common": [
-        "libs/common/src"
-      ],
-      "@app/common/*": [
-        "libs/common/src/*"
-      ],
-      "@app/microservices": [
-        "libs/microservices/src"
-      ],
-      "@app/microservices/*": [
-        "libs/microservices/src/*"
-      ],
-      "@app/ddd": [
-        "libs/ddd/src"
-      ],
-      "@app/ddd/*": [
-        "libs/ddd/src/*"
-      ],
-      "@app/testing": [
-        "libs/testing/src"
-      ],
-      "@app/testing/*": [
-        "libs/testing/src/*"
-      ],
-      "@app/rmq": [
-        "libs/rmq/src"
-      ],
-      "@app/rmq/*": [
-        "libs/rmq/src/*"
-      ],
-      "@app/message-brokers": [
-        "libs/message-brokers/src"
-      ],
-      "@app/message-brokers/*": [
-        "libs/message-brokers/src/*"
-      ]
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"],
+      "@app/microservices": ["libs/microservices/src"],
+      "@app/microservices/*": ["libs/microservices/src/*"],
+      "@app/ddd": ["libs/ddd/src"],
+      "@app/ddd/*": ["libs/ddd/src/*"],
+      "@app/testing": ["libs/testing/src"],
+      "@app/testing/*": ["libs/testing/src/*"]
     }
   }
 }

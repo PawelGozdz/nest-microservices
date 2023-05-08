@@ -5,7 +5,6 @@ import { UserUpdateCommand } from './user-update.command';
 import { IUsersCommandRepository, UserUpdatedEvent } from '../../domain';
 import { EntityId } from '../../../../core';
 import { IClientProxy, UsersEventPatternEnum, ServiceNameEnum } from '@app/microservices';
-import { IUser } from '@app/ddd';
 
 @Injectable()
 export class UserUpdateHandler {
@@ -18,7 +17,7 @@ export class UserUpdateHandler {
   }
 
   async update(command: UserUpdateCommand): Promise<void> {
-    this.logger.debug(command, `Processing Update User -----------------------`);
+    this.logger.debug(command, `Processing Update User`);
 
     const entityId = EntityId.create(command.id);
 
@@ -49,7 +48,6 @@ export class UserUpdateHandler {
 
     const updatedDepartmentId =
       command.updatedDepartmentId && EntityId.create(command.updatedDepartmentId);
-    console.log('dddd', updatedDepartmentId);
 
     user.email = command.email ?? user.email;
     user.username = command.username ?? user.username;
@@ -59,15 +57,11 @@ export class UserUpdateHandler {
     await this.usersCommandRepository.update(user.id, user);
 
     // Emit to Rabbit Mq
-    this.rabbitMqClient.emit<UsersEventPatternEnum, IUser>(
+    this.rabbitMqClient.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
       UsersEventPatternEnum.USER_UPDATED,
       new UserUpdatedEvent({
         id: user.id,
         departmentId: user.departmentId,
-        email: user.email,
-        username: user.username,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
       }),
     );
 

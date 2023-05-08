@@ -1,16 +1,16 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { nestApplicationOptions } from './nest-app-configuration';
-import { Logger } from 'nestjs-pino';
-import { RmqService, TcpUsersService } from './core';
+import { RmqService, TcpDepartmentsService } from './core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     ...nestApplicationOptions,
   });
 
-  const tcpUsersService = app.get(TcpUsersService);
-  tcpUsersService.getOptions().map((opt) => app.connectMicroservice(opt));
+  const tcpDepartmentsService = app.get(TcpDepartmentsService);
+  tcpDepartmentsService.getOptions().map((opt) => app.connectMicroservice(opt));
 
   const rmqService = app.get(RmqService);
   rmqService.getOptions().map((opt) => app.connectMicroservice(opt));
