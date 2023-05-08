@@ -7,7 +7,6 @@ import { of, throwError } from 'rxjs';
 import { IDepartment } from '@app/ddd';
 import { DepartmentUpdateHandler } from './department-update.handler';
 import { DepartmentUpdateCommand } from './department-update.command';
-import { update } from 'lodash';
 
 describe('DepartmentUpdateHandler', () => {
   let handler: DepartmentUpdateHandler;
@@ -21,7 +20,7 @@ describe('DepartmentUpdateHandler', () => {
       providers: [
         DepartmentUpdateHandler,
         {
-          provide: ServiceNameEnum.USERS,
+          provide: ServiceNameEnum.DEPARTMENTS,
           useValue: clientProxyMock,
         },
       ],
@@ -56,14 +55,16 @@ describe('DepartmentUpdateHandler', () => {
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const name = 'IT';
     const updatedName = 'Finance';
+    const updatedAt = new Date();
+    const createdAt = new Date();
 
     const department: IDepartment = {
       id,
       name,
-      updatedAt: new Date(),
-      createdAt: new Date(),
+      updatedAt,
+      createdAt,
     };
-    clientProxyMock.send.mockReturnValue(of({ ...department, name: updatedName }));
+    clientProxyMock.send.mockReturnValue(of(void 0));
 
     const command = new DepartmentUpdateCommand({
       id,
@@ -76,10 +77,7 @@ describe('DepartmentUpdateHandler', () => {
     cut.subscribe({
       next(value) {
         // Assert
-        expect(value).toEqual({
-          id,
-          name: update,
-        });
+        expect(value).toBeUndefined();
         done();
       },
     });

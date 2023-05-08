@@ -54,7 +54,7 @@ describe('UserUpdateHandler', () => {
     expect(clientProxyMock.send).toBeCalledTimes(1);
   });
 
-  it('should update user email and updatedDepartmentId', (done) => {
+  it('should update user email and departmentId', (done) => {
     // Arrange
     const id = '0ed9d105-d215-41b5-849d-15b8ff6d12c6';
     const email = 'my@test.com';
@@ -62,16 +62,18 @@ describe('UserUpdateHandler', () => {
     const updatedEmail = 'updated-email@test.com';
     const departmentId = 'd4fa4040-610d-4637-a3d4-b3b28f0eaa37';
     const updatedDepartmentId = 'd4fa4040-610d-4637-a3d4-000000000000';
+    const updatedAt = new Date();
+    const createdAt = new Date();
 
     const user: IUser = {
       id,
       email,
       username,
       departmentId,
-      updatedAt: new Date(),
-      createdAt: new Date(),
+      updatedAt,
+      createdAt,
     };
-    clientProxyMock.send.mockReturnValue(of({ ...user, email: updatedEmail, updatedDepartmentId }));
+    clientProxyMock.send.mockReturnValue(of(void 0));
 
     const command = new UserUpdateCommand({
       email,
@@ -87,12 +89,7 @@ describe('UserUpdateHandler', () => {
     cut.subscribe({
       next(value) {
         // Assert
-        expect(value).toEqual({
-          id,
-          username,
-          email: updatedEmail,
-          departmentId: updatedDepartmentId,
-        });
+        expect(value).toBeUndefined();
         done();
       },
     });

@@ -2,7 +2,7 @@ import { createMock } from '@golevelup/ts-jest';
 import { Test } from '@nestjs/testing';
 import { ClientProxy } from '@nestjs/microservices';
 import { TestLoggerModule } from '@app/testing';
-import { ServiceNameEnum, UsersCommandPatternEnum } from '@app/microservices';
+import { ServiceNameEnum, DepartmentsCommandPatternEnum } from '@app/microservices';
 import { DepartmentFindManyHandler } from './department-find-many.handler';
 import { DepartmentFindManyCommand } from './department-find-many.command';
 import { IDepartment } from '@app/ddd';
@@ -32,7 +32,7 @@ describe('DepartmentFindManyHandler', () => {
   it('should send event', () => {
     // Arrange
     const commandName = {
-      cmd: UsersCommandPatternEnum.USER_FIND_MANY,
+      cmd: DepartmentsCommandPatternEnum.DEPARTMENT_FIND_MANY,
     };
     const command = new DepartmentFindManyCommand();
 
