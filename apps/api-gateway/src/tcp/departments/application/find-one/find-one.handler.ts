@@ -4,9 +4,10 @@ import { PinoLogger } from 'nestjs-pino';
 import { ServiceNameEnum, IClientProxy, DepartmentsCommandPatternEnum } from '@app/microservices';
 import { IDepartment } from '@app/ddd';
 import { DepartmentFindOneCommand } from './find-one.command';
+import { IDepartmentFindOneHandler } from '../../domain';
 
 @Injectable()
-export class DepartmentFindOneHandler {
+export class DepartmentFindOneHandler implements IDepartmentFindOneHandler {
   constructor(
     @Inject(ServiceNameEnum.DEPARTMENTS) private readonly client: IClientProxy,
     private logger: PinoLogger,

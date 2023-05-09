@@ -13,14 +13,13 @@ import {
 } from '../application';
 import { IDepartmentsService } from '../domain/departments-service.interface';
 import { EnvConfig } from '../../../config';
-
-const handlers = [
-  DepartmentCreateHandler,
-  DepartmentUpdateHandler,
-  DepartmentDeleteHandler,
-  DepartmentFindOneHandler,
-  DepartmentFindManyHandler,
-];
+import {
+  IDepartmentCreateHandler,
+  IDepartmentDeleteHandler,
+  IDepartmentFindManyHandler,
+  IDepartmentFindOneHandler,
+  IDepartmentUpdateHandler,
+} from '../domain';
 
 @Module({
   imports: [
@@ -48,7 +47,26 @@ const handlers = [
       provide: IClientProxy,
       useValue: ClientProxy,
     },
-    ...handlers,
+    {
+      provide: IDepartmentCreateHandler,
+      useClass: DepartmentCreateHandler,
+    },
+    {
+      provide: IDepartmentDeleteHandler,
+      useClass: DepartmentDeleteHandler,
+    },
+    {
+      provide: IDepartmentFindOneHandler,
+      useClass: DepartmentFindOneHandler,
+    },
+    {
+      provide: IDepartmentFindManyHandler,
+      useClass: DepartmentFindManyHandler,
+    },
+    {
+      provide: IDepartmentUpdateHandler,
+      useClass: DepartmentUpdateHandler,
+    },
   ],
   exports: [],
 })

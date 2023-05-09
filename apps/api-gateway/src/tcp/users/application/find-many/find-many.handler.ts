@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { UserFindManyCommand } from './find-many.command';
 import { IUser } from '@app/ddd';
+import { IUserFindManyHandler } from '../../domain';
 
 @Injectable()
-export class UserFindManyHandler {
+export class UserFindManyHandler implements IUserFindManyHandler {
   constructor(
     @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,

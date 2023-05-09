@@ -3,9 +3,10 @@ import { ServiceNameEnum, IClientProxy, DepartmentsCommandPatternEnum } from '@a
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
 import { DepartmentDeleteCommand } from './delete.command';
+import { IDepartmentDeleteHandler } from '../../domain';
 
 @Injectable()
-export class DepartmentDeleteHandler {
+export class DepartmentDeleteHandler implements IDepartmentDeleteHandler {
   constructor(
     @Inject(ServiceNameEnum.DEPARTMENTS) private readonly client: IClientProxy,
     private logger: PinoLogger,

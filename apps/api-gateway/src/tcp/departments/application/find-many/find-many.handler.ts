@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { DepartmentFindManyCommand } from './find-many.command';
 import { IDepartment } from '@app/ddd';
+import { IDepartmentFindManyHandler } from '../../domain';
 
 @Injectable()
-export class DepartmentFindManyHandler {
+export class DepartmentFindManyHandler implements IDepartmentFindManyHandler {
   constructor(
     @Inject(ServiceNameEnum.DEPARTMENTS) private readonly client: IClientProxy,
     private logger: PinoLogger,
@@ -15,6 +16,7 @@ export class DepartmentFindManyHandler {
   }
 
   execute(command: DepartmentFindManyCommand): Observable<IDepartment[]> {
+    console.log('HERE', command);
     this.logger.debug(command, `Processing Find Many`);
 
     return this.client.send<IDepartment[], DepartmentFindManyCommand>(

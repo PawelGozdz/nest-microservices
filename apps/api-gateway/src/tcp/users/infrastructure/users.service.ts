@@ -1,28 +1,30 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { IUsersService } from '../domain/users-service.interface';
+import { IUsersService } from '../domain/service.interface';
 import {
   UserCreateCommand,
-  UserCreateHandler,
   UserDeleteCommand,
-  UserDeleteHandler,
   UserFindManyCommand,
-  UserFindManyHandler,
   UserFindOneCommand,
-  UserFindOneHandler,
   UserUpdateCommand,
-  UserUpdateHandler,
 } from '../application';
 import { IUser } from '@app/ddd';
+import {
+  IUserCreateHandler,
+  IUserDeleteHandler,
+  IUserFindManyHandler,
+  IUserFindOneHandler,
+  IUserUpdateHandler,
+} from '../domain';
 
 @Injectable()
 export class UsersService implements IUsersService {
   constructor(
-    @Inject(UserCreateHandler) private readonly userCreateHandler: UserCreateHandler,
-    @Inject(UserDeleteHandler) private readonly userDeleteHandler: UserDeleteHandler,
-    @Inject(UserUpdateHandler) private readonly userUpdateHandler: UserUpdateHandler,
-    @Inject(UserFindOneHandler) private readonly userFindOneHandler: UserFindOneHandler,
-    @Inject(UserFindManyHandler) private readonly userFindManyHandler: UserFindManyHandler,
+    private readonly userCreateHandler: IUserCreateHandler,
+    private readonly userDeleteHandler: IUserDeleteHandler,
+    private readonly userUpdateHandler: IUserUpdateHandler,
+    private readonly userFindOneHandler: IUserFindOneHandler,
+    private readonly userFindManyHandler: IUserFindManyHandler,
   ) {}
 
   create(command: UserCreateCommand): Observable<{ id: string }> {

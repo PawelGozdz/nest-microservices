@@ -11,16 +11,15 @@ import {
   UserFindOneHandler,
   UserUpdateHandler,
 } from '../application';
-import { IUsersService } from '../domain/users-service.interface';
+import { IUsersService } from '../domain/service.interface';
 import { EnvConfig } from '../../../config';
-
-const handlers = [
-  UserCreateHandler,
-  UserUpdateHandler,
-  UserDeleteHandler,
-  UserFindOneHandler,
-  UserFindManyHandler,
-];
+import {
+  IUserCreateHandler,
+  IUserDeleteHandler,
+  IUserFindManyHandler,
+  IUserFindOneHandler,
+  IUserUpdateHandler,
+} from '../domain';
 
 @Module({
   imports: [
@@ -48,7 +47,26 @@ const handlers = [
       provide: IClientProxy,
       useValue: ClientProxy,
     },
-    ...handlers,
+    {
+      provide: IUserCreateHandler,
+      useClass: UserCreateHandler,
+    },
+    {
+      provide: IUserDeleteHandler,
+      useClass: UserDeleteHandler,
+    },
+    {
+      provide: IUserUpdateHandler,
+      useClass: UserUpdateHandler,
+    },
+    {
+      provide: IUserFindOneHandler,
+      useClass: UserFindOneHandler,
+    },
+    {
+      provide: IUserFindManyHandler,
+      useClass: UserFindManyHandler,
+    },
   ],
   exports: [],
 })

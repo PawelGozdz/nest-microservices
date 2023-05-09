@@ -1,33 +1,30 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { IDepartmentsService } from '../domain/departments-service.interface';
 import {
   DepartmentCreateCommand,
-  DepartmentCreateHandler,
   DepartmentDeleteCommand,
-  DepartmentDeleteHandler,
   DepartmentFindManyCommand,
-  DepartmentFindManyHandler,
   DepartmentFindOneCommand,
-  DepartmentFindOneHandler,
   DepartmentUpdateCommand,
-  DepartmentUpdateHandler,
 } from '../application';
 import { IDepartment } from '@app/ddd';
+import {
+  IDepartmentCreateHandler,
+  IDepartmentDeleteHandler,
+  IDepartmentFindManyHandler,
+  IDepartmentFindOneHandler,
+  IDepartmentUpdateHandler,
+} from '../domain';
 
 @Injectable()
 export class DepartmentsService implements IDepartmentsService {
   constructor(
-    @Inject(DepartmentCreateHandler)
-    private readonly departmentCreateHandler: DepartmentCreateHandler,
-    @Inject(DepartmentDeleteHandler)
-    private readonly departmentDeleteHandler: DepartmentDeleteHandler,
-    @Inject(DepartmentUpdateHandler)
-    private readonly departmentUpdateHandler: DepartmentUpdateHandler,
-    @Inject(DepartmentFindOneHandler)
-    private readonly departmentFindOneHandler: DepartmentFindOneHandler,
-    @Inject(DepartmentFindManyHandler)
-    private readonly departmentFindManyHandler: DepartmentFindManyHandler,
+    private readonly departmentCreateHandler: IDepartmentCreateHandler,
+    private readonly departmentDeleteHandler: IDepartmentDeleteHandler,
+    private readonly departmentUpdateHandler: IDepartmentUpdateHandler,
+    private readonly departmentFindOneHandler: IDepartmentFindOneHandler,
+    private readonly departmentFindManyHandler: IDepartmentFindManyHandler,
   ) {}
 
   create(command: DepartmentCreateCommand): Observable<{ id: string }> {

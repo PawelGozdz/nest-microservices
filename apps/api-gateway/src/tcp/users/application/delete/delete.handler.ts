@@ -3,9 +3,10 @@ import { ServiceNameEnum, UsersCommandPatternEnum, IClientProxy } from '@app/mic
 import { PinoLogger } from 'nestjs-pino';
 import { Observable } from 'rxjs';
 import { UserDeleteCommand } from './delete.command';
+import { IUserDeleteHandler } from '../../domain';
 
 @Injectable()
-export class UserDeleteHandler {
+export class UserDeleteHandler implements IUserDeleteHandler {
   constructor(
     @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,

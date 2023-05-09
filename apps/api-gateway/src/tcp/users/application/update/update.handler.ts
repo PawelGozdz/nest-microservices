@@ -3,9 +3,10 @@ import { ServiceNameEnum, UsersCommandPatternEnum, IClientProxy } from '@app/mic
 import { PinoLogger } from 'nestjs-pino';
 import { UserUpdateCommand } from './update.command';
 import { Observable } from 'rxjs';
+import { IUserUpdateHandler } from '../../domain';
 
 @Injectable()
-export class UserUpdateHandler {
+export class UserUpdateHandler implements IUserUpdateHandler {
   constructor(
     @Inject(ServiceNameEnum.USERS) private readonly client: IClientProxy,
     private logger: PinoLogger,
