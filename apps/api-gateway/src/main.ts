@@ -12,9 +12,7 @@ import { SwaggerBuilder } from './swagger';
 import { EnvConfig } from './config';
 import { nestApplicationSecurityConfiguration } from './security';
 import { HttpExceptionFilter } from './core';
-
-import { UsersModule } from './tcp/users/infrastructure/users.module';
-import { DepartmentsModule } from './tcp/departments/infrastructure';
+import { DepartmentsModule, UsersModule } from './tcp';
 
 async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(

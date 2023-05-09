@@ -1,3 +1,3 @@
-export { UsersModule } from './infrastructure';
+export { DepartmentsModule } from './infrastructure';
 export * from './application';
 export * from './domain';

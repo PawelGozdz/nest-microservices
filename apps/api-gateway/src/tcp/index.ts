@@ -1,2 +1,2 @@
 export * from './users';
-// export * from './departments';
+export * from './departments';
