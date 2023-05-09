@@ -11,7 +11,7 @@ export class UserUpdateHandler implements IUserUpdateHandler {
   constructor(
     private readonly usersCommandRepository: IUsersCommandRepository,
     private logger: PinoLogger,
-    @Inject(ServiceNameEnum.RABBIT_MQ) private readonly rabbitMqClient: IClientProxy,
+    @Inject(ServiceNameEnum.RABBIT_MQ) private readonly client: IClientProxy,
   ) {
     logger.setContext(this.constructor.name);
   }
@@ -57,7 +57,7 @@ export class UserUpdateHandler implements IUserUpdateHandler {
     await this.usersCommandRepository.update(user.id, user);
 
     // Emit to Rabbit Mq
-    this.rabbitMqClient.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
+    this.client.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
       UsersEventPatternEnum.USER_UPDATED,
       new UserUpdatedEvent({
         id: user.id,

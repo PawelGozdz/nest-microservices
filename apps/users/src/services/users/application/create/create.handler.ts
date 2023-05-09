@@ -11,7 +11,7 @@ export class UserCreateHandler implements IUserCreateHandler {
   constructor(
     private readonly usersCommandRepository: IUsersCommandRepository,
     private logger: PinoLogger,
-    @Inject(ServiceNameEnum.RABBIT_MQ) private readonly rabbitMqClient: IClientProxy,
+    @Inject(ServiceNameEnum.RABBIT_MQ) private readonly client: IClientProxy,
   ) {
     logger.setContext(this.constructor.name);
   }
@@ -40,7 +40,7 @@ export class UserCreateHandler implements IUserCreateHandler {
     await this.usersCommandRepository.save(user);
 
     // EMit to Rabbig Mq
-    this.rabbitMqClient.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
+    this.client.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
       UsersEventPatternEnum.USER_CREATED,
       new UserCreatedEvent({
         id: user.id,

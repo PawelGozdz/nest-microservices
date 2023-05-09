@@ -11,7 +11,7 @@ export class UserDeleteHandler implements IUserDeleteHandler {
   constructor(
     private readonly usersCommandRepository: IUsersCommandRepository,
     private logger: PinoLogger,
-    @Inject(ServiceNameEnum.RABBIT_MQ) private readonly rabbitMqClient: IClientProxy,
+    @Inject(ServiceNameEnum.RABBIT_MQ) private readonly client: IClientProxy,
   ) {
     logger.setContext(this.constructor.name);
   }
@@ -35,7 +35,7 @@ export class UserDeleteHandler implements IUserDeleteHandler {
     await this.usersCommandRepository.delete(user.id);
 
     // Emit to Rabbit Mq
-    this.rabbitMqClient.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
+    this.client.emit<UsersEventPatternEnum, { id: string; departmentId: string }>(
       UsersEventPatternEnum.USER_DELETED,
       new UserDeletedEvent({
         id: user.id,
