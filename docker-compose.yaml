@@ -61,12 +61,10 @@ services:
   postgres_users:
     image: postgres
     container_name: postgres_users_db
-    env_file:
-      - ./apps/users/.env
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DATABASE: ${DB_NAME}
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: username
     ports:
       - 5432:5432
     volumes:
@@ -77,12 +75,10 @@ services:
   postgres_departments:
     image: postgres
     container_name: postgres_departments_db
-    env_file:
-      - ./apps/departments/.env
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DATABASE: ${DB_NAME}
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: username
     ports:
       - 5433:5432
     volumes:
