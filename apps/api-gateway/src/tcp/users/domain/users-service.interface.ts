@@ -21,7 +21,7 @@ interface UserUpdate {
 
 export abstract class IUsersService {
   abstract create(dto: User): Observable<{ id: string }>;
-  abstract update(dto: UserUpdate): Observable<any>;
+  abstract update(dto: UserUpdate): Observable<void>;
   abstract delete(id: Id): Observable<void>;
   abstract findOne(id: Id): Observable<IUser>;
   abstract findMany(dto: any): Observable<Array<IUser>>;

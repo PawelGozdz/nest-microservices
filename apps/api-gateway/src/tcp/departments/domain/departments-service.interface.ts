@@ -16,7 +16,7 @@ interface DepartmentUpdate {
 
 export abstract class IDepartmentsService {
   abstract create(dto: DepartmentCreate): Observable<{ id: string }>;
-  abstract update(dto: DepartmentUpdate): Observable<any>;
+  abstract update(dto: DepartmentUpdate): Observable<void>;
   abstract delete(id: Id): Observable<void>;
   abstract findOne(id: Id): Observable<IDepartment>;
   abstract findMany(dto: any): Observable<Array<IDepartment>>;
