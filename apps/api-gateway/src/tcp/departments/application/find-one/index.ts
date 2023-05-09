@@ -1,2 +1,2 @@
-export * from './department-find-one.command';
-export * from './department-find-one.handler';
+export * from './find-one.command';
+export * from './find-one.handler';

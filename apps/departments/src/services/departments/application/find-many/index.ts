@@ -1,2 +1,2 @@
-export * from './department-find-many.command';
-export * from './department-find-many.handler';
+export * from './find-many.command';
+export * from './find-many.handler';

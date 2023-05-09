@@ -1,2 +1,2 @@
-export * from './users-command.repository';
-export * from './users-query.repository';
+export * from './command.repository';
+export * from './query.repository';

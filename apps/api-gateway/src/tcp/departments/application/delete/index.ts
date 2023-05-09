@@ -1,2 +1,2 @@
-export * from './department-delete.command';
-export * from './department-delete.handler';
+export * from './delete.command';
+export * from './delete.handler';

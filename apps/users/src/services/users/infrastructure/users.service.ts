@@ -24,22 +24,22 @@ export class UsersService {
     private readonly userFindManyHandler: IUserFindManyHandler,
   ) {}
   create(command: UserCreateCommand) {
-    return this.userCreateHandler.create(command);
+    return this.userCreateHandler.execute(command);
   }
 
   findMany(command: UserFindManyCommand) {
-    return this.userFindManyHandler.findMany(command);
+    return this.userFindManyHandler.execute(command);
   }
 
   findOne(command: UserFindOneCommand) {
-    return this.userFindOneHandler.findOne(command);
+    return this.userFindOneHandler.execute(command);
   }
 
   update(command: UserUpdateCommand) {
-    return this.userUpdateHandler.update(command);
+    return this.userUpdateHandler.execute(command);
   }
 
   delete(command: UserDeleteCommand) {
-    return this.userDeleteHandler.delete(command);
+    return this.userDeleteHandler.execute(command);
   }
 }

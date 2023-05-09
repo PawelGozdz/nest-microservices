@@ -1,2 +1,2 @@
-export * from './departments-command.repository.interface';
-export * from './departments-query.repository.interface';
+export * from './command.repository.interface';
+export * from './query.repository.interface';

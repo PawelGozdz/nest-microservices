@@ -1,2 +1,2 @@
-export * from './department-update.command';
-export * from './department-update.handler';
+export * from './update.command';
+export * from './update.handler';

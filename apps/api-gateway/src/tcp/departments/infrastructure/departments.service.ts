@@ -31,22 +31,22 @@ export class DepartmentsService implements IDepartmentsService {
   ) {}
 
   create(command: DepartmentCreateCommand): Observable<{ id: string }> {
-    return this.departmentCreateHandler.create(command);
+    return this.departmentCreateHandler.execute(command);
   }
 
   findMany(command: DepartmentFindManyCommand): Observable<Array<IDepartment>> {
-    return this.departmentFindManyHandler.findMany(command);
+    return this.departmentFindManyHandler.execute(command);
   }
 
   findOne(command: DepartmentFindOneCommand): Observable<IDepartment> {
-    return this.departmentFindOneHandler.findOne(command);
+    return this.departmentFindOneHandler.execute(command);
   }
 
   update(command: DepartmentUpdateCommand): Observable<void> {
-    return this.departmentUpdateHandler.update(command);
+    return this.departmentUpdateHandler.execute(command);
   }
 
   delete(command: DepartmentDeleteCommand): Observable<void> {
-    return this.departmentDeleteHandler.delete(command);
+    return this.departmentDeleteHandler.execute(command);
   }
 }

@@ -24,22 +24,22 @@ export class DepartmentsService {
     private readonly departmentFindManyHandler: IDepartmentFindManyHandler,
   ) {}
   create(command: DepartmentCreateCommand) {
-    return this.departmentCreateHandler.create(command);
+    return this.departmentCreateHandler.execute(command);
   }
 
   findMany(command: DepartmentFindManyCommand) {
-    return this.departmentFindManyHandler.findMany(command);
+    return this.departmentFindManyHandler.execute(command);
   }
 
   findOne(command: DepartmentFindOneCommand) {
-    return this.departmentFindOneHandler.findOne(command);
+    return this.departmentFindOneHandler.execute(command);
   }
 
   update(command: DepartmentUpdateCommand) {
-    return this.departmentUpdateHandler.update(command);
+    return this.departmentUpdateHandler.execute(command);
   }
 
   delete(command: DepartmentDeleteCommand) {
-    return this.departmentDeleteHandler.delete(command);
+    return this.departmentDeleteHandler.execute(command);
   }
 }

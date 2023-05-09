@@ -26,22 +26,22 @@ export class UsersService implements IUsersService {
   ) {}
 
   create(command: UserCreateCommand): Observable<{ id: string }> {
-    return this.userCreateHandler.create(command);
+    return this.userCreateHandler.execute(command);
   }
 
   findMany(command: UserFindManyCommand): Observable<Array<IUser>> {
-    return this.userFindManyHandler.findMany(command);
+    return this.userFindManyHandler.execute(command);
   }
 
   findOne(command: UserFindOneCommand): Observable<IUser> {
-    return this.userFindOneHandler.findOne(command);
+    return this.userFindOneHandler.execute(command);
   }
 
   update(command: UserUpdateCommand): Observable<void> {
-    return this.userUpdateHandler.update(command);
+    return this.userUpdateHandler.execute(command);
   }
 
   delete(command: UserDeleteCommand): Observable<void> {
-    return this.userDeleteHandler.delete(command);
+    return this.userDeleteHandler.execute(command);
   }
 }

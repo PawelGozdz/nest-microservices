@@ -1,2 +1,2 @@
-export * from './user-find-many.command';
-export * from './user-find-many.handler';
+export * from './find-many.command';
+export * from './find-many.handler';
