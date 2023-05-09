@@ -1,4 +1,4 @@
-## Start app
+## Start whole app
 
 ```
 docker-compose up
