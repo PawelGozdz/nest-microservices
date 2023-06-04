@@ -1,19 +1,19 @@
-import { Controller, Get, Post, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { RequiredBody } from '@app/common';
-import { CreateUserDto, CreateUserResponse } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { IdDto } from './dto/id.dto';
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Observable } from 'rxjs';
 import {
   UserCreateCommand,
   UserDeleteCommand,
   UserFindManyCommand,
   UserFindOneCommand,
   UserUpdateCommand,
-} from '../application';
-import { IUsersService } from '../domain';
-import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { DepartmentIdDto, FindOneUserResponse } from './dto';
-import { Observable } from 'rxjs';
+} from '../../application';
+import { IUsersService } from '../../domain';
+import { DepartmentIdDto, FindOneUserResponse } from '../dto';
+import { CreateUserDto, CreateUserResponse } from '../dto/create-user.dto';
+import { IdDto } from '../dto/id.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @ApiTags('API Users')
 @Controller('departments/:departmentId/users')

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EnvironmentConfigModule as ConfigModule } from './config';
-import { LoggerModule } from './core/logger';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { EnvironmentConfigModule as ConfigModule } from './config';
 import { DefaultIfEmptyInterceptor } from './core';
-import { DepartmentsModule, UsersModule } from './tcp';
+import { LoggerModule } from './core/logger';
+import { DepartmentsModule, UsersModule } from './services';
 
 @Module({
   imports: [ConfigModule, LoggerModule, UsersModule, DepartmentsModule],

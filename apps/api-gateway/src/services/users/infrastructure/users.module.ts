@@ -1,9 +1,8 @@
-import { Module } from '@nestjs/common';
 import { IClientProxy, ServiceNameEnum } from '@app/microservices';
+import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+import { EnvConfig } from '../../../config';
 import {
   UserCreateHandler,
   UserDeleteHandler,
@@ -11,8 +10,6 @@ import {
   UserFindOneHandler,
   UserUpdateHandler,
 } from '../application';
-import { IUsersService } from '../domain/service.interface';
-import { EnvConfig } from '../../../config';
 import {
   IUserCreateHandler,
   IUserDeleteHandler,
@@ -20,6 +17,9 @@ import {
   IUserFindOneHandler,
   IUserUpdateHandler,
 } from '../domain';
+import { IUsersService } from '../domain/service.interface';
+import { UsersController } from './tcp';
+import { UsersService } from './users.service';
 
 @Module({
   imports: [

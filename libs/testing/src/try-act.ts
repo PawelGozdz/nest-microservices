@@ -1,7 +1,6 @@
 type TryActResult<T> = { result?: T; error?: Error };
 
 function isPromiseLike<T>(obj: any): obj is PromiseLike<T> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return typeof obj?.then === 'function';
 }
 

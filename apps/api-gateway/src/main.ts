@@ -1,18 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 
+import { AppValidationPipe } from '@app/common';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import compression from 'compression';
-import { AppValidationPipe } from '@app/common';
 import { AppModule } from './app.module';
 import { nestApplicationOptions } from './nest-app-configuration';
 
-import { SwaggerBuilder } from './swagger';
 import { EnvConfig } from './config';
-import { nestApplicationSecurityConfiguration } from './security';
 import { HttpExceptionFilter } from './core';
-import { DepartmentsModule, UsersModule } from './tcp';
+import { nestApplicationSecurityConfiguration } from './security';
+import { DepartmentsModule, UsersModule } from './services';
+import { SwaggerBuilder } from './swagger';
 
 async function buildSwaggers(app: INestApplication) {
   await SwaggerBuilder.build(

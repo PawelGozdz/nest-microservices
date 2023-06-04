@@ -1,19 +1,19 @@
-import { Controller, Get, Post, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { RequiredBody } from '@app/common';
-import { CreateDepartmentDto, CreateDepartmentResponse } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
-import { IdDto } from './dto/id.dto';
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Observable } from 'rxjs';
 import {
   DepartmentCreateCommand,
   DepartmentDeleteCommand,
   DepartmentFindManyCommand,
   DepartmentFindOneCommand,
   DepartmentUpdateCommand,
-} from '../application';
-import { IDepartmentsService } from '../domain';
-import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { FindOneDepartmentResponse } from './dto';
-import { Observable } from 'rxjs';
+} from '../../application';
+import { IDepartmentsService } from '../../domain';
+import { FindOneDepartmentResponse } from '../dto';
+import { CreateDepartmentDto, CreateDepartmentResponse } from '../dto/create-department.dto';
+import { IdDto } from '../dto/id.dto';
+import { UpdateDepartmentDto } from '../dto/update-department.dto';
 
 @ApiTags('API Departments')
 @Controller('departments')

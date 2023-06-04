@@ -1,9 +1,8 @@
-import { Module } from '@nestjs/common';
 import { IClientProxy, ServiceNameEnum } from '@app/microservices';
+import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy, ClientsModule, Transport } from '@nestjs/microservices';
-import { DepartmentsService } from './departments.service';
-import { DepartmentsController } from './departments.controller';
+import { EnvConfig } from '../../../config';
 import {
   DepartmentCreateHandler,
   DepartmentDeleteHandler,
@@ -11,8 +10,6 @@ import {
   DepartmentFindOneHandler,
   DepartmentUpdateHandler,
 } from '../application';
-import { IDepartmentsService } from '../domain/departments-service.interface';
-import { EnvConfig } from '../../../config';
 import {
   IDepartmentCreateHandler,
   IDepartmentDeleteHandler,
@@ -20,6 +17,9 @@ import {
   IDepartmentFindOneHandler,
   IDepartmentUpdateHandler,
 } from '../domain';
+import { IDepartmentsService } from '../domain/departments-service.interface';
+import { DepartmentsService } from './departments.service';
+import { DepartmentsController } from './tcp';
 
 @Module({
   imports: [
